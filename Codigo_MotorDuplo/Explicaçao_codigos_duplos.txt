@@ -1,0 +1,8 @@
+Explicação sobre os códigos:
+    Motor duplo:
+    
+    No códigos dos motores duplos, se é controlado dois motores, X e Z que avançam e retornam depois de um certo tempo,
+    obedecem comandos escritos no terminal.
+
+    No códigos dos motores duplos elevador, se é controlado dois motores, X e Z que avançam e retornam juntos e obedecem
+    a comandos escritos no terminal.

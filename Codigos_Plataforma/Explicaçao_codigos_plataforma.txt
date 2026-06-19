@@ -1,0 +1,10 @@
+Explicação sobre os códigos:
+    Plataforma:
+    
+    versão 1: Protótipo inicial, programação "rústica" sem uso correto do AccelStepper, meio bagunçado e bastante perdido.
+
+    versão 2: Versão melhorada em comparação com a versão 1, uso apropriado da biblioteca AccelStepper, reorganização do
+    código base, adaptação para strings de comando com base em "if's" que trocam estados que determinam diferentes
+    situações.
+    Leve otimização.
+    Ve-se nescessária a readaptação dos prints guias de comando, visto que eles consomem muita memória do arduíno.
