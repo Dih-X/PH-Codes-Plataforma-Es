@@ -1,0 +1,8 @@
+Explicação sobre os códigos:
+    Motor unico:
+    
+    Movem um unico motor em uma direção.
+
+    versão 1: (não usa AccelStepper apropriadamente)
+
+    versão 2: (não usa AccelStepper apropriadamente)
