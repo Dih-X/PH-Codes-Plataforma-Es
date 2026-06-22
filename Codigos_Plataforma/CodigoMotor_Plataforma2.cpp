@@ -85,7 +85,6 @@ enum EstadoAtualMotores{
     ZERAMENTO,      //Zera os eixos e para funcionarem corretamente depois
     ATERRISAGEM,    //Aguarda o pouso do drone
     HUNT,           //Arrasta o drone ate o ponto de troca de bateria & fecha a pinça
-    //RETRACAO_X,     //Fecha a pinca p/alinhar o drone ao centro da plataforma
     MOVENDO_Z,      //Eleva o elevador para a troca da bateria
     TROCA_BATERIA,  //Tempo com funcao para a troca da bateria
     RETORNO_Z,      //Desce o elevador com a bateria vazia e a guarda-a
