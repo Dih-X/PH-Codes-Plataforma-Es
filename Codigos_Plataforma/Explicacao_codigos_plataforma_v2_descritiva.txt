@@ -1,0 +1,60 @@
+Explicação sobre os códigos:
+    Plataforma:
+
+    versão 1: Protótipo inicial, com programação mais "rústica" e sem a estrutura adequada do AccelStepper.
+    O código era mais direto e simples, porém apresentava pouca organização, menor modularização e um controle
+    básico das etapas do processo. Era um ponto de partida funcional, mas ainda muito limitado para uma execução
+    mais robusta.
+
+    versão 2: Versão melhorada em comparação com a versão 1, com uso apropriado da biblioteca AccelStepper,
+    reorganização do código base e adaptação para comandos por string, utilizando estados para controlar as
+    diferentes etapas do processo. Nesta versão, o código passou a ter uma estrutura mais organizada, maior
+    controle do sistema e melhor manutenção, embora ainda apresentasse limitações no controle de alguns eixos e
+    na execução de movimentos mais complexos.
+
+    versão 3 (mais atual): Versão aprimorada em relação à versão 2, com foco em melhorar a execução dos movimentos,
+    corrigir problemas de acionamento de motores e expandir as funções da plataforma. Ela incorpora um controle
+    mais completo para os eixos, além de novas funções relacionadas à garra e ao empurrão do drone.
+
+    Comparação geral entre as versões 1, 2 e 3:
+
+    1) Mudanças de estrutura e organização:
+    - Versão 1: estrutura mais simples e direta, com lógica de controle mais básica.
+    - Versão 2: reorganização do código, separação em funções e uso de estados para controlar as etapas.
+    - Versão 3: estrutura mais expandida, com maior número de funções e controle mais detalhado de motores
+      e ações específicas.
+
+    2) Alterações no controle dos motores:
+    - Versão 1: uso de controle mais manual, com chamadas diretas a funções de passo e lógica simples de movimento.
+    - Versão 2: uso adequado do AccelStepper, com melhor controle de velocidade, aceleração e movimento por alvo.
+    - Versão 3: mantém o uso do AccelStepper, mas amplia o controle para múltiplos motores e novas funções
+      de movimentação coordenada.
+
+    3) Adições implementadas na versão 2:
+    - Uso adequado da biblioteca AccelStepper.
+    - Reorganização do código base.
+    - Implementação de comandos por string para controlar o sistema.
+    - Uso de estados para separar as etapas de operação.
+    - Melhor controle da execução dos movimentos.
+
+    4) Adições implementadas na versão 3:
+    - Correção de erros fatais na execução de ações de determinados motores.
+    - Adição de motores duplos funcionais.
+    - Suporte ao controle de motores duplos nos eixos Y.
+    - Adição do segundo braço Y de empurrão.
+    - Melhorias no controle da Garra X.
+    - Adição da extensão da Garra Z.
+    - Adição do controle da Garra Z.
+    - Melhor organização lógica do fluxo de operação do sistema.
+
+    5) Alterações e remoções conceituais entre as versões:
+    - Da versão 1 para a versão 2: o controle mais manual e direto foi substituído por uma lógica mais organizada,
+      com funções específicas e estados de operação.
+    - Da versão 2 para a versão 3: o modelo mais simples foi expandido para suportar múltiplos motores, novos
+      braços e novos mecanismos de garra, deixando o sistema mais completo para a troca de bateria.
+
+    Resumo final:
+    - Versão 1: protótipo inicial e mais básico.
+    - Versão 2: evolução estrutural, com melhor controle e organização.
+    - Versão 3: versão mais completa, com maior autonomia funcional, múltiplos motores e novas capacidades de
+      manipulação do sistema.

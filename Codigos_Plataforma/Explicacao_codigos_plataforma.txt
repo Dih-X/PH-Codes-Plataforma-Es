@@ -1,10 +1,39 @@
 Explicação sobre os códigos:
     Plataforma:
     
-    versão 1: Protótipo inicial, programação "rústica" sem uso correto do AccelStepper, meio bagunçado e bastante perdido.
+    versão 1: Protótipo inicial, programação "rústica" sem uso correto do AccelStepper, com uma estrutura mais
+    simples e bastante limitada. O código era mais direto, mas apresentava pouca organização e menor controle sobre
+    o fluxo de operação.
 
-    versão 2: Versão melhorada em comparação com a versão 1, uso apropriado da biblioteca AccelStepper, reorganização do
-    código base, adaptação para strings de comando com base em "if's" que trocam estados que determinam diferentes
-    situações.
-    Leve otimização.
-    Ve-se nescessária a readaptação dos prints guias de comando, visto que eles consomem muita memória do arduíno.
+    versão 2: Versão melhorada em comparação com a versão 1, com uso apropriado da biblioteca AccelStepper,
+    reorganização do código base e adaptação para comandos por string, utilizando estados para controlar as
+    diferentes etapas do processo.
+    Nesta versão, o código passou a ter uma estrutura mais organizada, maior controle do sistema e melhor
+    manutenção, embora ainda apresentasse limitações no controle de alguns eixos e na execução de movimentos mais
+    complexos.
+
+    Comparação entre a versão 1 e a versão 2:
+    - Versão 1: abordagem mais simples, com menos modularização, uso mais básico de controle de motores e menor
+      robustez na execução das etapas.
+    - Versão 2: estrutura mais organizada, uso correto do AccelStepper, melhor divisão lógica do fluxo de operação
+      e maior facilidade para implementar novos comandos e estados.
+
+    Melhorias introduzidas na versão 2 em relação à versão 1:
+    - Uso adequado da biblioteca AccelStepper.
+    - Reorganização do código base.
+    - Implementação de comandos por string para controlar o sistema.
+    - Uso de estados para separar as etapas de operação.
+    - Melhor controle da execução dos movimentos.
+
+    versão 3 (mais atual): Versão aprimorada em relação à versão 2, com foco em melhorar a execução dos movimentos,
+    corrigir problemas de acionamento de motores e expandir as funções da plataforma.
+
+    Adições da versão 3:
+    - Correção de erros fatais na execução de ações de determinados motores.
+    - Adição de motores duplos funcionais.
+    - Suporte ao controle de motores duplos nos eixos Y.
+    - Adição do segundo braço Y de empurrão.
+    - Melhorias no controle da Garra X.
+    - Adição da extensão da Garra Z.
+    - Adição do controle da Garra Z.
+    - Melhor organização lógica do fluxo de operação do sistema.
