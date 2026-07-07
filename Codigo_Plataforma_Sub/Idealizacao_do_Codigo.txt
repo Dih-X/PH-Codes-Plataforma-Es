@@ -1,8 +1,8 @@
 Arduino 1{
     
-    communicação --> resposta recebida
-         \
-        ação --> a realizar
+    communicação --> resposta recebida                  ||          Nem precisa fzr uma communicação (rx & tx)
+         \                                              ||          Apenas usar os mesmos pinos para
+        ação --> a realizar                             ||          O sistema reconhecer começoes e fins
             \
             contagem de
             tempo da execução
