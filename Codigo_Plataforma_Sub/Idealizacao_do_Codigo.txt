@@ -1,0 +1,45 @@
+Arduino 1{
+    
+    communicação --> resposta recebida
+         \
+        ação --> a realizar
+            \
+            contagem de
+            tempo da execução
+            ou (timer msm) de
+            determinada ação
+            /
+        ação --> realizada
+         /
+    communicação --> ordem enviada
+
+}Arduino 2{
+
+    communicação --> ordem recebida
+         \
+        ação --> a realizar
+            \
+            contagem de
+            tempo da execução
+            ou (timer msm) de
+            determinada ação
+            /
+        ação --> realizada
+         /
+    communicação --> ordem enviada
+
+}Arduino 3{
+
+    communicação --> ordem recebida
+         \
+        ação --> a realizar
+            \
+            contagem de
+            tempo da execução
+            ou (timer msm) de
+            determinada ação
+            /
+        ação --> realizada
+         /
+    communicação --> resposta enviada
+}

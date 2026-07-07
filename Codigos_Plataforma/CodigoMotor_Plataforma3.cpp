@@ -91,14 +91,14 @@ AccelStepper motorYEmpurrao(AccelStepper::DRIVER, Y3_STEP, Y3_DIR);
 AccelStepper motorZ(AccelStepper::DRIVER, Z1_STEP, Z1_DIR);
 
 //opcao de segundo motor/eixo com controle separado | IMPLEMENTADA (X)
-AccelStepper motor2X(AccelStepper::DRIVER, X2_STEP, X2_DIR); //AccelStepper::DRIVER 
+AccelStepper motor2X(AccelStepper::DRIVER, X2_STEP, X2_DIR); //AccelStepper::DRIVER  
 AccelStepper motor2Y(AccelStepper::DRIVER, Y2_STEP, Y2_DIR);
 AccelStepper motor2YEmpurrao(AccelStepper::DRIVER, Y4_STEP, Y4_DIR); 
 AccelStepper motor2Z(AccelStepper::DRIVER, Z2_STEP, Z2_DIR); 
 
 //Garra da bateria
 AccelStepper motorZgarra(AccelStepper::DRIVER, Zgarra_STEP, Zgarra_DIR);    //Garra Open/Close 
-AccelStepper motorZYgarra(AccelStepper::DRIVER, ZY_STEP, ZY_DIR);           //Garra Foward          |   Implementado (X) (1/7/26)
+AccelStepper motorZYgarra(AccelStepper::DRIVER, ZY_STEP, ZY_DIR);           //Garra Foward 
 
 //------------------------CONFIGURACOES-------------------------------------||
 
@@ -161,12 +161,12 @@ EstadoAtualMotores estadoatual = STAND_BY;
     delay(delayPassos); //delayPassos           //No entando pode baguncar a contagem de passos e ate tornalos inuteis...
 }*/
  
-////////////////////////////////////////////////////////////////
-//----------------------SETA OS PONTOS INICIAIS----------------
-void ZERO_X(){
+//////////////////////////////////////////////////////////////// 
+//----------------------SETA OS PONTOS (zero) INICIAIS----------------
+void ZERO_X(){ 
     if (Xstart == true){
-        motorX.setCurrentPosition(0);
-        motor2X.setCurrentPosition(0);
+        motorX.setCurrentPosition(0);  
+        motor2X.setCurrentPosition(0); 
     }
 }
 
@@ -425,7 +425,7 @@ void loop()
         } else if (comando == "zy" && estadoatual == ZERAMENTO){    //Zera os eixos Y
             motorY.moveTo(0);
 
-        } else if (comando == "zz" && estadoatual == ZERAMENTO){    //Zera o eixo e garra Z
+        } else if (comando == "zz" && estadoatual == ZERAMENTO){    //Zera o eixo e garra Z 
             motorZ.moveTo(0);
 
         } else if (comando == "zpi" && estadoatual == ZERAMENTO){   //&& (motorX.currentPosition != motorX.setCurrentPosition)
@@ -453,7 +453,7 @@ void loop()
             //Serial.println(" | comando desconhecido    |");
         }
     }
-    
+     
     switch (estadoatual){
         
         case STAND_BY: //Estado de espera onde comandos podem ser executados
@@ -504,6 +504,7 @@ void loop()
 
             if (Yend == true){      //Talvez seja necessario fazer com que o if acione um tempo depois que o motor partir para nao causar possiveis travamentos 
                 pararY();           //Apos X tempo o if eh liberado e entao se eh possivel usar o fim de curso para parar o motor... 
+                estadoatual = MOVENDO_Z;
             }else{
                 moverY();
             }
@@ -516,7 +517,7 @@ void loop()
                 moverX();
             }
 
-            estadoatual = MOVENDO_Z;
+            
 
             break;
             
@@ -534,9 +535,9 @@ void loop()
             
             break;
             
-        case TROCA_BATERIA:                                 //Revisar (Refinar) | Revisao 1
-            if (millis() - tempoEsperaZ >= 10000) {         //Talvez o tempo de espera tenha que ser a soma total do tempo interno dentro do if
-                Serial.println("...espera simulada...");
+        case TROCA_BATERIA:                                 //Revisar (Refinar) | Revisao 1 | Revisao 2
+            if (millis() - tempoEsperaZ >= 1000) {         //Talvez o tempo de espera tenha que ser a soma total do tempo interno dentro do if
+                Serial.println("...espera simulada...");  //10000 millis() | antes
 
                 abrirGarraBateria();                        //serve como garantia de que a garra estara aberta
 
