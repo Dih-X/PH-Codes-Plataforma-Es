@@ -6,16 +6,18 @@ const int Z2_STEP = 4;  //8
 const int Z2_DIR = 7;   //9
 
 //Empurrador da Garra Z
-const int ZY_STEP = 99;
-const int ZY_DIR = 98;
+const int ZY_STEP = 99;         // Deve-se verificar
+const int ZY_DIR = 98;  
 
 //Garras no Z trocam a bateria
-const int Zgarra_STEP = 10;  //10   // Deve-se verificar
+const int Zgarra_STEP = 10;  //10   
 const int Zgarra_DIR = 15;
 
-const int Zstart = 27;  //Conferir se eh viavel
+const int Zstart = 27;   //Conferir se eh viavel
 const int ZGstart = 28;
 const int ZExstart = 29;
+
+const int Yend = 33;
 
 const int Zend = 32;  //Conferir se eh viavel
 const int ZGend = 30;
@@ -27,19 +29,21 @@ AccelStepper motorZ(AccelStepper::DRIVER, Z1_STEP, Z1_DIR);
 AccelStepper motor2Z(AccelStepper::DRIVER, Z2_STEP, Z2_DIR);
 AccelStepper motorZgarra(AccelStepper::DRIVER, Zgarra_STEP, Zgarra_DIR);  //Garra Open/Close
 AccelStepper motorZYgarra(AccelStepper::DRIVER, ZY_STEP, ZY_DIR);
-
-String comando = "";
-
+ 
+String comando = ""; 
+ 
 long passosZ = 1600;       //M's = Modulos de subdivisao (embaixo dos capacitores)                           | Dist = altura desejada onde se possa trocar a bateria do drone
 long passosZgarra = 800;   //passosYempurrar precisa ser calculado com precisao, do contrario nao funcionara | Passos = Distancia por 1 volta completa, 1VC = 200 passos sem M's adicionais
 long passosZYgarra = 800;  //Zgarra controla o fechamento da garra | ZYgarra controla o deslocamento (extrusao) da garra
 
-unsigned long tempoEsperaZ = 0;
+unsigned long tempoEsperaZ = 0;   
+unsigned long tempoEsperaEX = 0;  
 
 const float VEL_MAX = 800.0;  //acho q so vai ate 1000 (1k)
-const float ACEL = 200.0;
-
-zerr = false;
+const float ACEL = 200.0; 
+ 
+bool zerr = false; 
+bool printExecu = false;
 
 enum EstadoProtoMotor {
   STAND_BY,
@@ -131,73 +135,121 @@ void setup() {
 
   motor2Z.setMaxSpeed(VEL_MAX);   //2M
   motor2Z.setAcceleration(ACEL);  //2M
-
+  
   motorZgarra.setMaxSpeed(VEL_MAX);
   motorZgarra.setAcceleration(ACEL);
-
+    
   pinMode(Zgarra_STEP, OUTPUT);
   pinMode(Zgarra_DIR, OUTPUT);
-
+   
   pinMode(Zstart, INPUT_PULLUP);
   pinMode(Zend, INPUT_PULLUP);
-
-  motorZ.setPinsInverted(false, true, false);
-  motor2Z.setPinsInverted(true, false, true);
-
+    
+  motorZ.setPinsInverted(false, true, false); 
+  motor2Z.setPinsInverted(true, false, true); 
+  
   motorZgarra.setPinsInverted(false, true, false);  //INVERTER CASO ESTEJA NO SENTIDO ERRADO
+    
+  Serial.begin(9600);  
 
-  Serial.begin(9600);
-}
+  delay(100);
 
-void loop() {
+  Serial.println(" | AGUARDANDO ORDENS            |");
+  Serial.println(" |\                             |");
+  Serial.println(" | \                            |");
+  Serial.println(" | |atv, zera:                  |");
+  Serial.println(" | |zera -> zu, zz, zpi, esc    |");
+} 
 
-  if (Serial.available()) {                  // 'beffier' if command central script
-    comando = Serial.readStringUntil('\n');  // cmds -> atv, zr, zpi, emr, esc
-    comando.trim();                          // zu, zx, zy, zz, esczr
-    comando.toLowerCase();
+void loop() { 
+  
+  tempoEsperaEX = millis();   //nao sei se ha problema ou nao em deixar os millis aqui
+  tempoEsperaZ = millis();
 
+  if (Serial.available()) {                    // 'beffier' if command central script // 
+    comando = Serial.readStringUntil('\n');   // cmds -> atv, zr, zpi, emr, esc      //  
+    comando.trim();                          // zu, zx, zy, zz, esczr               // 
+    comando.toLowerCase();  
+ 
     ///////////////////////////////////////////////////////////////////////
 
-    if (comando == "atv" && estadoatual == STAND_BY) {
-      Serial.println(" | AGUARDANDO ORDENS | ");
-      estadoatual = WORKING;
+    if (comando == "atv" && estadoatual == STAND_BY) { 
+
+      estadoatual = MOVENDO_Z; 
+      Serial.println(" | ELEVADOR EM MOVIMENTO | "); 
 
     } else if (comando == "stop" && estadoatual != STAND_BY) {
-
-      pararZ();
-      pararZgarra();
-
+  
+      estadoatual = EMER_STT; 
+  
     } else if (comando == "zera" && estadoatual == STAND_BY) {
-      //homing_U();
-      estadoatual = ZERADOR;
-      zerr = true
-    }
+      
+      estadoatual = ZERADOR;  
+      zerr = true;             
 
+    } else if (comando == "zu" && estadoatual == ZERADOR){    //Move todos os eixos/garras para a posicao inicial (0)
+      
+      Serial.println("zerando eixos..."); 
+      homing_U();
+      millis() - tempoEsperaEX >= 8000;   
+
+    } else if (comando == "zz" && estadoatual == ZERADOR){    //Zera o eixo e garra Z 
+      
+      motorZ.moveTo(0);      
+      motor2Z.moveTo(0);     
+      motorZgarra.moveTo(0); 
+      motorZYgarra.moveTo(0);
+      abrirGarraBateria();   
+      
+      millis() - tempoEsperaEX >= 8000;
+      
+    } else if (comando == "esc" && estadoatual == ZERADOR){   //Sai desse modo
+      
+      estadoatual = STAND_BY;
+      Serial.println("esc-ed {estadoatual} -> standing by");
+      Serial.println(" | SAIU   DO ZERENCIAMENTO |");
+
+    } else if (comando == "zpi" && estadoatual == ZERAMENTO){   
+      ZERO_Z();                                               //define ponto zero | Eixo Z
+      ZERO_Zvador(); 
+    }
     ///////////////////////////////////////////////////////////////////////
   }
 
   switch (estadoatual) {
     case STAND_BY:
 
-      tempoEsperaZ = millis();
+      printExecu = false;
+      break;
+      
+    case ZERADOR:  
+
+      if (!printExecu){
+        Serial.println("em zerenciamento");
+        printExecu = true;
+      }
+       
       break;
 
     case MOVENDO_Z:
 
       if (Zend == true) {
+        
         pararZ();
-        tempoEsperaZ = millis();
         estadoatual = TROCA_BATERIA;
+      
       } else {
+  
         moverZ();
+      
       }
+      
+      break; 
+      
+    case TROCA_BATERIA: 
 
-      break;
-
-    case TROCA_BATERIA:
-
-      if (millis() - tempoEsperaZ >= 1000) {      //Talvez o tempo de espera tenha que ser a soma total do tempo interno dentro do if
-        Serial.println("...espera simulada...");  //10000 millis() | antes
+      if (millis() - tempoEsperaZ >= 1000) {       //Talvez o tempo de espera tenha que ser a soma total do tempo interno dentro do if
+        //Serial.println("...espera simulada..."); //10000 millis() | antes
 
         abrirGarraBateria();  //serve como garantia de que a garra estara aberta
 
@@ -216,74 +268,70 @@ void loop() {
         motorZYgarra.moveTo(passosZYgarra);  //extruda a garra Z
         millis() - tempoEsperaZ >= 6000;
 
-        abrirGarraBateria();  //solta a bateria velha num lugar
+        abrirGarraBateria();  //solta a bateria velha num lugar 
         millis() - tempoEsperaZ >= 5000;
 
-        fecharGarraBateria();  //pega a bateria carregada
+        fecharGarraBateria();  //pega a bateria carregada 
         millis() - tempoEsperaZ >= 5000;
 
-        motorZYgarra.moveTo(0);  //contrai a garra Z
+        motorZYgarra.moveTo(0);  //contrai a garra Z 
         millis() - tempoEsperaZ >= 6000;
 
-        motorZ.moveTo(passosZ);  //sobe pro drone novamente (com bateria cheia)
+        motorZ.moveTo(passosZ);  //sobe pro drone novamente (com bateria cheia) 
         millis() - tempoEsperaZ >= 10000;
 
-        motorZYgarra.moveTo(passosZYgarra);  //extruda a garra Z
+        motorZYgarra.moveTo(passosZYgarra);  //extruda a garra Z 
         millis() - tempoEsperaZ >= 6000;
 
-        abrirGarraBateria();  //encaixa bateria carregada
+        abrirGarraBateria();  //encaixa bateria carregada 
         millis() - tempoEsperaZ >= 5000;
 
-        motorZYgarra.moveTo(0);  //contrai a garra Z
+        motorZYgarra.moveTo(0);  //contrai a garra Z 
         millis() - tempoEsperaZ >= 6000;
 
         estadoatual = RETORNO_Z;
       }
-
-      break;
+ 
+      break; 
 
     case RETORNO_Z:
 
       if (digitalRead(Zstart) == LOW) {
         pararZ();
-        estadoatual = RETORNO_Y;
+        estadoatual = STAND_BY; //Envia resposta ao proximo arduino
 
       } else {
+
         motorZ.moveTo(0);
         motor2Z.moveTo(0);
+        motorZgarra.moveTo(0);
+        motorZYgarra.moveTo(0);
+        abrirGarraBateria();
+        
       }
 
       break;
 
-     /*case ZERADOR:
-      if (zerr == true) {
-        homing_U();
-        estadoatual = STAND_BY;  //colocar tempo de espera
-      }
-
-      homing_U();
-      break;*/
-
-    case STOP:
+     /////////////////////////////////////////////////////////////
+     /*case STOP:
 
       pararZ();
-      pararYempurra();
       pararZgarra();
 
-      Serial.println("Parada normal");
-      Serial.println(" -> standing by");
+      //Serial.println("Parada normal");
+      //Serial.println(" -> standing by");
 
       estadoatual = STAND_BY;
-      break;
+      break;*/
 
     case EMER_STT:
-      
+       
       motorZ.stop();
       motor2Z.stop();
-
+ 
       motorZgarra.stop();
       motorZYgarra.stop();
-
+ 
       Serial.println("Parada EMER");
       estadoatual = STAND_BY;
       Serial.println(" -> standing by");
