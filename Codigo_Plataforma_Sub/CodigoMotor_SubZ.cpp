@@ -1,8 +1,4 @@
-
-
-
-
- #include <AccelStepper.h>
+#include <AccelStepper.h>
 
 const int Z1_STEP = 3;  //6
 const int Z1_DIR = 6;
@@ -27,18 +23,18 @@ const int Zend = 32;  //Conferir se eh viavel
 const int ZGend = 30;
 const int ZExend = 31;
 
-const int pinoEnable = 8;  //Essencial para o funcionamento do CNC | Devera ser acionado para cada CNC posteriormente
+const int pinoEnable = 8;  
 
 AccelStepper motorZ(AccelStepper::DRIVER, Z1_STEP, Z1_DIR);
 AccelStepper motor2Z(AccelStepper::DRIVER, Z2_STEP, Z2_DIR);
-AccelStepper motorZgarra(AccelStepper::DRIVER, Zgarra_STEP, Zgarra_DIR);  //Garra Open/Close
+AccelStepper motorZgarra(AccelStepper::DRIVER, Zgarra_STEP, Zgarra_DIR);  
 AccelStepper motorZYgarra(AccelStepper::DRIVER, ZY_STEP, ZY_DIR);
  
 String comando = ""; 
  
-long passosZ = 1600;       //M's = Modulos de subdivisao (embaixo dos capacitores)                           | Dist = altura desejada onde se possa trocar a bateria do drone
-long passosZgarra = 800;   //passosYempurrar precisa ser calculado com precisao, do contrario nao funcionara | Passos = Distancia por 1 volta completa, 1VC = 200 passos sem M's adicionais
-long passosZYgarra = 800;  //Zgarra controla o fechamento da garra | ZYgarra controla o deslocamento (extrusao) da garra
+long passosZ = 1600;       
+long passosZgarra = 800;   
+long passosZYgarra = 800;  
 
 unsigned long tempoEsperaZ = 0;   
 unsigned long tempoEsperaEX = 0;  
@@ -130,7 +126,6 @@ void abrirGarraBateria() {
 ///////////////////////////////////////////////////////////////////////////////////////
 
 void setup() {
-  // put your setup code here, to run once:
   pinMode(pinoEnable, OUTPUT);
   digitalWrite(pinoEnable, LOW);
 
@@ -158,17 +153,12 @@ void setup() {
 
   delay(100);
 
-  Serial.println(" | AGUARDANDO ORDENS            |");
-  Serial.println(" |\                             |");
-  Serial.println(" | \                            |");
-  Serial.println(" | |atv, zera:                  |");
-  Serial.println(" | |zera -> zu, zz, zpi, esc    |");
 } 
 
 void loop() { 
   
-  tempoEsperaEX = millis();   //nao sei se ha problema ou nao em deixar os millis aqui
-  tempoEsperaZ = millis();
+  tempoEsperaEX = millis();     //nao sei se ha problema ou nao em deixar os millis aqui
+  tempoEsperaZ = millis();      
 
   if (Serial.available()) {                    // 'beffier' if command central script // 
     comando = Serial.readStringUntil('\n');   // cmds -> atv, zr, zpi, emr, esc      //  
@@ -176,10 +166,14 @@ void loop() {
     comando.toLowerCase();  
  
     ///////////////////////////////////////////////////////////////////////
+    
+    if (Yend == true){
+      estadoatual = MOVENDO_Z;
+    }
 
     /*if (comando == "atv" && estadoatual == STAND_BY) { 
 
-      estadoatual = MOVENDO_Z; 
+      estadoatual = MOVENDO_Z;  
       Serial.println(" | ELEVADOR EM MOVIMENTO | "); 
 
     } else if (comando == "stop" && estadoatual != STAND_BY) {
@@ -188,9 +182,9 @@ void loop() {
   
     } else if (comando == "zera" && estadoatual == STAND_BY) {
       
-      estadoatual = ZERADOR;  
+      estadoatual = ZERADOR;   
       zerr = true;             
-
+      
     } else if (comando == "zu" && estadoatual == ZERADOR){    //Move todos os eixos/garras para a posicao inicial (0)
       
       Serial.println("zerando eixos..."); 
@@ -220,9 +214,6 @@ void loop() {
       ZERO_Zvador(); 
     }*/
 
-    if (Yend == true){
-      estadoatual = MOVENDO_Z;
-    }
     ///////////////////////////////////////////////////////////////////////
   }
 
@@ -301,7 +292,7 @@ void loop() {
 
         estadoatual = RETORNO_Z;
       }
- 
+      
       break; 
 
     case RETORNO_Z:
@@ -323,16 +314,6 @@ void loop() {
       break;
 
      /////////////////////////////////////////////////////////////
-     /*case STOP:
-
-      pararZ();
-      pararZgarra();
-
-      //Serial.println("Parada normal");
-      //Serial.println(" -> standing by");
-
-      estadoatual = STAND_BY;
-      break;*/
 
     case EMER_STT:
        

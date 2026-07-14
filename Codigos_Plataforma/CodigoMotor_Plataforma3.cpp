@@ -54,6 +54,8 @@ const int Xstart = 16;          //Conferir se eh viavel
 const int X2start = 16;
 
 const int Ystart = 26;          //Conferir se eh viavel
+const int Yend = 18;
+const int YstartEmp = 28;       //Conferir se eh viavel  
 
 const int Zstart = 27;          //Conferir se eh viavel
 const int ZGstart = 28;
@@ -62,9 +64,6 @@ const int ZExstart = 29;
 //Final
 const int Xend = 17;            //Conferir se eh viavel
 const int X2end = 17;
-
-const int Yend = 18;
-const int YstartEmp = 28;       //Conferir se eh viavel       
 
 const int Zend = 32;            //Conferir se eh viavel
 const int ZGend = 30;       
@@ -186,7 +185,6 @@ void ZERO_Z(){
         motor2Z.setCurrentPosition(0);
     }
 }
- 
 
 void ZERO_Zvador(){
     if (ZGstart == true){
@@ -211,7 +209,6 @@ void homing_U(){         //reset Universal
     motorZgarra.moveTo(0);
     motorZYgarra.moveTo(0);
 }
-
 
 ////////////////////////////////////////////////////////////////
 
@@ -475,6 +472,9 @@ void loop()
             if (comando == "esc" && estadoatual != STAND_BY){               //Abortar espera de aterrissagem (volta pra stand by)
                 Serial.println("Leaving from landing waiting sequence");    
                 estadoatual = STAND_BY;
+                //pararZ();       
+                //pararZgarra();
+
 
             }else{
                 if (digitalRead(sensorPouso) == HIGH){          //Verifica se o drone pousou ou nao   
@@ -504,9 +504,9 @@ void loop()
 
             if (Yend == true){      //Talvez seja necessario fazer com que o if acione um tempo depois que o motor partir para nao causar possiveis travamentos 
                 pararY();           //Apos X tempo o if eh liberado e entao se eh possivel usar o fim de curso para parar o motor... 
-                estadoatual = MOVENDO_Z;
+                estadoatual = MOVENDO_Z; 
             }else{
-                moverY();
+                moverY();           //Enviar Sinal RX/TX para acionar Sub. El. Z
             }
             
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -593,8 +593,8 @@ void loop()
                 estadoatual = RETORNO_Y;
                 
             }else{
-                motorZ.moveTo(0);  
-                motor2Z.moveTo(0); 
+                motorZ.moveTo(0);   
+                motor2Z.moveTo(0);  
             }
 
             break;
@@ -682,6 +682,7 @@ void loop()
 
             break;
     }    
+    
     motorX.run();
     motorY.run();
     motorZ.run();
@@ -695,4 +696,5 @@ void loop()
 
     motorZgarra.run();
     motorZYgarra.run();
+    
 }
