@@ -79,7 +79,6 @@ void pararX(){
 }
 
 ////////////////////////////////////////////////////////////////
-//--------------------------------------------------------------
 
 void setup(){
 
@@ -120,7 +119,7 @@ void loop()
         
         /////////////////////////////////////////////////////////////////////////////
         
-        if (comando == "atv" && estadoatual == STAND_BY) {
+        /*if (comando == "atv" && estadoatual == STAND_BY) {
             Serial.println(" | ESPERANDO POUSO...      |");
             estadoatual = ATERRISSAGEM;
 
@@ -180,7 +179,7 @@ void loop()
         
         } else {
             Serial.println(" | comando desconhecido    |");
-        }
+        }*/
     }
      
     switch (estadoatual){
@@ -206,7 +205,6 @@ void loop()
                 estadoatual = STAND_BY;
                 //pararZ();       
                 //pararZgarra();
-
 
             }else{
                 if (digitalRead(sensorPouso) == HIGH){          //Verifica se o drone pousou ou nao   
@@ -249,24 +247,18 @@ void loop()
                 moverX();
             }                       //Enviar Sinal RX/TX para acionar Sub. X (?)
 
-            
-
             break;
             
         case MOVENDO_Z:
-
             break;
             
         case TROCA_BATERIA:                               
-            
             break;
 
         case RETORNO_Z:
-            
             break;
 
-        case RETORNO_Y:                        
-
+        case RETORNO_Y:                       
             break;
 
         case EXPANSAO_X:
