@@ -264,11 +264,11 @@ void loop() {
 
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      if (Yend == true) {  //Talvez seja necessario fazer com que o if acione um tempo depois que o motor partir para nao causar possiveis travamentos
-        pararY();          //Apos X tempo o if eh liberado e entao se eh possivel usar o fim de curso para parar o motor...
-        estadoatual = MOVENDO_Z;
+      if (Yend == true) {         //Talvez seja necessario fazer com que o if acione um tempo depois que o motor partir para nao causar possiveis travamentos
+        pararY();                 //Apos X tempo o if eh liberado e entao se eh possivel usar o fim de curso para parar o motor...
+        estadoatual = MOVENDO_Z;  //Enviar Sinal RX/TX para acionar Sub. El. Z
       } else {
-        moverY();          //Enviar Sinal RX/TX para acionar Sub. El. Z
+        moverY();                 //Enviar Sinal RX/TX para acionar Sub. X
       }
 
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -282,8 +282,6 @@ void loop() {
       break;
 
     case MOVENDO_Z:
-      //Serial.println("movendo Z");
-      //motorZ.moveTo(passosZ);
 
       if (Zend == true) {
         pararZ();
@@ -328,10 +326,10 @@ void loop() {
       }
 
       /*motorY.moveTo(0);
-            if(digitalRead(Ystart) == LOW){     //barra Y empurrao
-                pararY();
-                estadoatual = EXPANSAO_X;
-            }*/
+        if(digitalRead(Ystart) == LOW){     //barra Y empurrao
+          pararY();
+          estadoatual = EXPANSAO_X;
+        }*/
 
       tempoEsperaExp = millis();
 
@@ -360,12 +358,8 @@ void loop() {
       break;
 
     case STOP:
-
-      pararX();
       pararY();
-      pararZ();
       pararYempurra();
-      pararZgarra();
 
       Serial.println("Parada normal");
       Serial.println(" -> standing by");
@@ -374,19 +368,11 @@ void loop() {
       break;
 
     case EMER_STT:
-
-      motorX.stop();
       motorY.stop();
       motorYEmpurrao.stop();
-      motorZ.stop();
-
-      motor2X.stop();
+      
       motor2Y.stop();
       motor2YEmpurrao.stop();
-      motor2Z.stop();
-
-      motorZgarra.stop();
-      motorZYgarra.stop();
 
       Serial.println("Parada EMER");
       estadoatual = STAND_BY;
@@ -395,17 +381,10 @@ void loop() {
       break;
   }
 
-  motorX.run();
   motorY.run();
-  motorZ.run();
-
-  motor2X.run();
   motor2Y.run();
-  motor2Z.run();
-
+  
   motorYEmpurrao.run();
   motor2YEmpurrao.run();
 
-  motorZgarra.run();
-  motorZYgarra.run();
 }
