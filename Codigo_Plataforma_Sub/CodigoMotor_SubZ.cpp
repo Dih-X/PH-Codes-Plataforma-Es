@@ -45,17 +45,35 @@ const float ACEL = 200.0;
 bool zerr = false; 
 bool printExecu = false;
 
-enum EstadoProtoMotor {
+/*enum EstadoProtoMotor {
   STAND_BY,
   MOVENDO_Z,
   TROCA_BATERIA,
   RETORNO_Z,
-  ZERADOR,
+  ZERAMENTO,
   STOP,
   EMER_STT
+};*/
+
+enum EstadoAtualMotores {
+  STAND_BY,       //HUB de comandos e espera inputs
+  ZERAMENTO,      //Zera os eixos e para funcionarem corretamente depois
+  ATERRISSAGEM,   //Aguarda o pouso do drone
+  HUNT,           //Arrasta o drone ate o ponto de troca de bateria & fecha a pinça
+  MOVENDO_Z,      //Eleva o elevador para a troca da bateria
+  TROCA_BATERIA,  //Tempo com funcao para a troca da bateria
+  RETORNO_Z,      //Desce o elevador com a bateria vazia e a guarda-a
+  RETORNO_Y,      //Retorna o drone (arrastando-o) a posicao de lancamento
+  EXPANSAO_X,     //Libera ele (drone) lateralmente para lift off!
+  STOP,           //Para a bagaca toda :/
+  EMER_STT        //Parada de emergencia ahh
 };
 
-EstadoProtoMotor estadoatual = STAND_BY;
+//STAND_BY > ZERAMENTO > ATERRISSAGEM > HUNT > MOVENDO_Z >
+//TROCA_BATERIA > RETORNO_Z > RETORNO_Y >
+//EXPANSAO_X > STOP > EMER_STT
+
+EstadoAtualMotores estadoatual = STAND_BY;
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -182,16 +200,16 @@ void loop() {
   
     } else if (comando == "zera" && estadoatual == STAND_BY) {
       
-      estadoatual = ZERADOR;   
+      estadoatual = ZERAMENTO;   
       zerr = true;             
       
-    } else if (comando == "zu" && estadoatual == ZERADOR){    //Move todos os eixos/garras para a posicao inicial (0)
+    } else if (comando == "zu" && estadoatual == ZERAMENTO){    //Move todos os eixos/garras para a posicao inicial (0)
       
       Serial.println("zerando eixos..."); 
       homing_U();
       millis() - tempoEsperaEX >= 8000;   
 
-    } else if (comando == "zz" && estadoatual == ZERADOR){    //Zera o eixo e garra Z 
+    } else if (comando == "zz" && estadoatual == ZERAMENTO){    //Zera o eixo e garra Z 
       
       motorZ.moveTo(0);      
       motor2Z.moveTo(0);     
@@ -201,7 +219,7 @@ void loop() {
       
       millis() - tempoEsperaEX >= 8000;
       
-    } else if (comando == "esc" && estadoatual == ZERADOR){   //Sai desse modo
+    } else if (comando == "esc" && estadoatual == ZERAMENTO){   //Sai desse modo
       
       estadoatual = STAND_BY;
       Serial.print("esc-ed ");
@@ -209,13 +227,19 @@ void loop() {
       Serial.println(" -> standing by");
       Serial.println(" | SAIU   DO ZERENCIAMENTO |");
 
-    } else if (comando == "zpi" && estadoatual == ZERADOR){   
-      ZERO_Z();                                               //define ponto zero | Eixo Z
-      ZERO_Zvador(); 
+    } else if (comando == "zpi" && estadoatual == ZERAMENTO){   
+      
+      ZERO_Z();                                     //define ponto zero | Eixo Z
+      ZERO_Zvador();
+
     }*/
 
     ///////////////////////////////////////////////////////////////////////
   }
+
+  //STAND_BY > ZERAMENTO > ATERRISSAGEM > HUNT > MOVENDO_Z >
+  //TROCA_BATERIA > RETORNO_Z > RETORNO_Y >
+  //EXPANSAO_X > STOP > EMER_STT
 
   switch (estadoatual) {
     case STAND_BY:
@@ -223,7 +247,7 @@ void loop() {
       printExecu = false;
       break;
       
-    case ZERADOR:  
+    case ZERAMENTO:  
 
       if (!printExecu){
         Serial.println("em zerenciamento");
@@ -235,14 +259,11 @@ void loop() {
     case MOVENDO_Z:
 
       if (Zend == true) {
-        
         pararZ();
         estadoatual = TROCA_BATERIA;
-      
+
       } else {
-  
         moverZ();
-      
       }
       
       break; 
@@ -327,6 +348,16 @@ void loop() {
       estadoatual = STAND_BY;
       Serial.println(" -> standing by");
 
+      break;
+    case ATERRISSAGEM
+      break;
+    case HUNT
+      break;
+    case RETORNO_Y
+      break;
+    case EXPANSAO_X
+      break;
+    case STOP
       break;
   }
 

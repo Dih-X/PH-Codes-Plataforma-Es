@@ -50,6 +50,10 @@ enum EstadoAtualMotores {
   EMER_STT        //Parada de emergencia ahh
 };
 
+//STAND_BY > ZERAMENTO > ATERRISSAGEM > HUNT > MOVENDO_Z >
+//TROCA_BATERIA > RETORNO_Z > RETORNO_Y >
+//EXPANSAO_X > STOP > EMER_STT
+
 EstadoAtualMotores estadoatual = STAND_BY;
 
 void ZERO_Y() {
@@ -63,7 +67,6 @@ void ZERO_Y() {
 }
 
 void homing_U() {  //reset Universal
-
   motorY.moveTo(0);
   motorYEmpurrao.moveTo(0);
 
@@ -206,8 +209,13 @@ void loop() {
       //Serial.println(" | comando desconhecido    |");
     }
   }
+  
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
+  //STAND_BY > ZERAMENTO > ATERRISSAGEM > HUNT > MOVENDO_Z >
+  //TROCA_BATERIA > RETORNO_Z > RETORNO_Y >
+  //EXPANSAO_X > STOP > EMER_STT
+
   switch (estadoatual) {
 
     case STAND_BY:  //Estado de espera onde comandos podem ser executados
@@ -285,6 +293,9 @@ void loop() {
         moverZ();
       }
 
+      break;
+      
+    case TROCA_BATERIA:
       break;
 
     case RETORNO_Z:
