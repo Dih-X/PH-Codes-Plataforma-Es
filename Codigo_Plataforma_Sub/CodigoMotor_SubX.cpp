@@ -240,7 +240,7 @@ void loop()
             }
             
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+            
             if (Xend == true && X2end == true){  //a Garra X so para quando ambas as pincas tocam no drone dos dois lados, cada uma de cada lado
                 pararX();
             }else{
