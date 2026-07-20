@@ -255,7 +255,55 @@ void loop() {
       }
       break;
 
-    case TROCA_BATERIA:
+    case TROCA_BATERIA: 
+
+      if (millis() - tempoEsperaZ >= 1000) {       //Talvez o tempo de espera tenha que ser a soma total do tempo interno dentro do if
+        //Serial.println("...espera simulada..."); //10000 millis() | antes
+
+        abrirGarraBateria();  //serve como garantia de que a garra estara aberta
+
+        motorZYgarra.moveTo(passosZYgarra);  //extruda a garra Z
+        millis() - tempoEsperaZ >= 6000;
+
+        fecharGarraBateria();             //pega a bateria
+        millis() - tempoEsperaZ >= 5000;  //espera a garra fechar
+
+        motorZYgarra.moveTo(0);  //contrai a garra Z
+        millis() - tempoEsperaZ >= 6000;
+
+        motorZ.moveTo(0);  //desce pro armazem de baterias
+        millis() - tempoEsperaZ >= 10000;
+
+        motorZYgarra.moveTo(passosZYgarra);  //extruda a garra Z
+        millis() - tempoEsperaZ >= 6000;
+
+        abrirGarraBateria();  //solta a bateria velha num lugar 
+        millis() - tempoEsperaZ >= 5000;
+
+        fecharGarraBateria();  //pega a bateria carregada 
+        millis() - tempoEsperaZ >= 5000;
+
+        motorZYgarra.moveTo(0);  //contrai a garra Z 
+        millis() - tempoEsperaZ >= 6000;
+
+        motorZ.moveTo(passosZ);  //sobe pro drone novamente (com bateria cheia) 
+        millis() - tempoEsperaZ >= 10000;
+
+        motorZYgarra.moveTo(passosZYgarra);  //extruda a garra Z 
+        millis() - tempoEsperaZ >= 6000;
+
+        abrirGarraBateria();  //encaixa bateria carregada 
+        millis() - tempoEsperaZ >= 5000;
+
+        motorZYgarra.moveTo(0);  //contrai a garra Z 
+        millis() - tempoEsperaZ >= 6000;
+
+        estadoatual = RETORNO_Z;
+      }
+      
+      break; 
+
+    /*case TROCA_BATERIA:
       if (millis() - tempoEsperaZ >= 1000) {
         abrirGarraBateria();
         motorZYgarra.moveTo(passosZYgarra);
@@ -264,7 +312,7 @@ void loop() {
         motorZ.moveTo(0);
         estadoatual = RETORNO_Z;
       }
-      break;
+      break;*/
 
     case RETORNO_Z:
       if (digitalRead(Zstart) == LOW) {
@@ -289,9 +337,13 @@ void loop() {
       break;
 
     case ATERRISSAGEM:
+      break;
     case HUNT:
+      break;
     case RETORNO_Y:
+      break;
     case EXPANSAO_X:
+      break;
     case STOP:
       break;
   }

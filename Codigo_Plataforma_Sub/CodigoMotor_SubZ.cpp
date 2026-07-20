@@ -349,15 +349,15 @@ void loop() {
       Serial.println(" -> standing by");
 
       break;
-    case ATERRISSAGEM
+    case ATERRISSAGEM:
       break;
-    case HUNT
+    case HUNT:
       break;
-    case RETORNO_Y
+    case RETORNO_Y:
       break;
-    case EXPANSAO_X
+    case EXPANSAO_X:
       break;
-    case STOP
+    case STOP:
       break;
   }
 
