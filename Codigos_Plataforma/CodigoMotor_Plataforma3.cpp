@@ -121,10 +121,18 @@ long passosZYgarra = 800;       //Zgarra controla o fechamento da garra | ZYgarr
 //  | Um eixo rotativo 'entalhado' estilo broca (Pinha (?)) onde o objeto se move diferente do modo tradicional... Na vertical
 
 /* Algo como:
-
- distancia = passos * diametro
-
+ 
+ 
+ circunferencia = 3,14 * Diam;
+ distancia = passos * circunferencia;
+ 
+ distancia/circunferencia = passos;
+ 
+ passos = passosX;
+ 
+ 
 */
+
 unsigned long tempoEsperaZ = 0;   
 unsigned long tempoEsperaExp = 0; 
  
