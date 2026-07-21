@@ -118,11 +118,16 @@ long passosZYgarra = 800;       //Zgarra controla o fechamento da garra | ZYgarr
 // Entao atraves de um processo se eh obtida a quantidade de passos necessaria para anda X distancia
 //  | Levando em conta que o Nema 17 sem encaixes no eixo e sem jumps M da 1 volta completa em 200 passos
 // Claro que a conta tera que ser diferente nos casos (Como no eixo Z) em que os motores controlarem
-//  | Um eixo rotativo 'entalhado' estilo broca onde o objeto se move diferente do modo tradicional...  
- 
+//  | Um eixo rotativo 'entalhado' estilo broca (Pinha (?)) onde o objeto se move diferente do modo tradicional... Na vertical
+
+/* Algo como:
+
+ distancia = passos * diametro
+
+*/
 unsigned long tempoEsperaZ = 0;   
 unsigned long tempoEsperaExp = 0; 
-
+ 
 //Velocidades////////////////////////////////////////////////////
 const float VEL_MAX = 800.0;  //acho q so vai ate 1000 (1k)
 const float ACEL = 200.0;
@@ -157,7 +162,7 @@ EstadoAtualMotores estadoatual = STAND_BY;
     digitalWrite(stepPin, HIGH);
     delay(delayPassos); //delayPassos           //Nao acho q seja necessaria v2
     digitalWrite(stepPin, LOW);                 //Talvez seja (para movimento continuo indeterminado)
-    delay(delayPassos); //delayPassos           //No entando pode baguncar a contagem de passos e ate tornalos inuteis...
+    delay(delayPassos); //delayPassos           //No entando pode baguncar a contagem de passos e ate torna-los inuteis...
 }*/
  
 //////////////////////////////////////////////////////////////// 
@@ -535,9 +540,9 @@ void loop()
             
             break;
             
-        case TROCA_BATERIA:                                 //Revisar (Refinar) | Revisao 1 | Revisao 2
-            if (millis() - tempoEsperaZ >= 1000) {         //Talvez o tempo de espera tenha que ser a soma total do tempo interno dentro do if
-                Serial.println("...espera simulada...");  //10000 millis() | antes
+        case TROCA_BATERIA:                                 // Revisar (Refinar) | Revisao 1 | Revisao 2
+            if (millis() - tempoEsperaZ >= 1000) {         // Talvez o tempo de espera tenha que ser a soma total do tempo interno dentro do if
+                Serial.println("...espera simulada...");  // 10000 millis() | antes
 
                 abrirGarraBateria();                        //serve como garantia de que a garra estara aberta
 
