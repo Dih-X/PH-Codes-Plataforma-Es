@@ -120,18 +120,18 @@ long passosZYgarra = 800;       //Zgarra controla o fechamento da garra | ZYgarr
 // Claro que a conta tera que ser diferente nos casos (Como no eixo Z) em que os motores controlarem
 //  | Um eixo rotativo 'entalhado' estilo broca (Pinha (?)) onde o objeto se move diferente do modo tradicional... Na vertical
 
+
 /* Algo como:
  
- 
- circunferencia = 3,14 * Diam;
+ circunferencia = 3,14 * diametro;
  distancia = passos * circunferencia;
  
  distancia/circunferencia = passos;
  
  passos = passosX;
  
- 
 */
+
 
 unsigned long tempoEsperaZ = 0;   
 unsigned long tempoEsperaExp = 0; 
