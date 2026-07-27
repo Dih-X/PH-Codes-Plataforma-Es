@@ -2,8 +2,8 @@
 
 //Controle dos motores: --------------------------------------------------------------
 //Y "Puxadores" do drone
-const int Y1_STEP = 3;          //2
-const int Y1_DIR = 6;           //3
+const int X1_STEP = 3;          //2
+const int X1_DIR = 6;           //3
 
 AccelStepper motorX(AccelStepper::DRIVER, X1_STEP, X1_DIR);
 
@@ -17,6 +17,7 @@ String comando = "";
 long passosX = 800;
 
 void setup() {
+
     pinMode(pinoEnable, OUTPUT);
     digitalWrite(pinoEnable, LOW);
 
@@ -29,6 +30,7 @@ void setup() {
     Serial.println(" -> zerar: cria o ponto inicial do motor");
     Serial.println(" -> acionar: aciona o motor");
     Serial.println(" -> return: retorna o motor para a posicao inicial");
+    
 }
 
 void loop(){

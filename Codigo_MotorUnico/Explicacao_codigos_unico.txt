@@ -7,4 +7,4 @@ Explicação sobre os códigos:
 
     versão 2: (não usa AccelStepper apropriadamente)
 
-    versão 3: Usa AccelStepper apropriadamente
+    versão 3: (Usa AccelStepper apropriadamente)
