@@ -1,0 +1,52 @@
+#include <AccelStepper.h>
+
+//Controle dos motores: --------------------------------------------------------------
+//Y "Puxadores" do drone
+const int Y1_STEP = 3;          //2
+const int Y1_DIR = 6;           //3
+
+AccelStepper motorX(AccelStepper::DRIVER, X1_STEP, X1_DIR);
+
+const int pinoEnable = 8;
+
+//Velocidades////////////////////////////////////////////////////
+const float VEL_MAX = 800.0;  //acho q so vai ate 1000 (1k)
+const float ACEL = 200.0;
+
+String comando = "";
+long passosX = 800;
+
+void setup() {
+    pinMode(pinoEnable, OUTPUT);
+    digitalWrite(pinoEnable, LOW);
+
+    motorX.setMaxSpeed(VEL_MAX);
+    motorX.setAcceleration(ACEL);
+
+    Serial.begin(9600);
+    Serial.println("zerar, acionar, return");
+
+    Serial.println(" -> zerar: cria o ponto inicial do motor");
+    Serial.println(" -> acionar: aciona o motor");
+    Serial.println(" -> return: retorna o motor para a posicao inicial");
+}
+
+void loop(){
+    if (Serial.available()){                          // 'beffier' if command central script
+        comando = Serial.readStringUntil('\n');      // cmds -> atv, zr, zpi, emr, esc
+        comando.trim();                             // zu, zx, zy, zz, esczr
+        comando.toLowerCase();
+        
+        if(comando == "acionar"){
+            motorX.moveTo(passosX);
+
+        } else if(comando == "zerar"){
+            motorX.setCurrentPosition(0);
+
+        }else if(comando == "return"){
+            motorX.moveTo(0);
+
+        }
+    }
+    motorX.run();
+}

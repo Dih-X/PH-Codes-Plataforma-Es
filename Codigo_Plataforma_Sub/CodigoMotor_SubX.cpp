@@ -85,9 +85,9 @@ void setup(){
     pinMode(pinoEnable, OUTPUT);
     digitalWrite(pinoEnable, LOW);
 
-    pinMode(BotaoStart, INPUT_PULLUP);
-    pinMode(BotaoStop, INPUT_PULLUP);
-    pinMode(BotaoReset, INPUT_PULLUP);
+    //pinMode(BotaoStart, INPUT_PULLUP);
+    //pinMode(BotaoStop, INPUT_PULLUP);
+    //pinMode(BotaoReset, INPUT_PULLUP);
 
     motorX.setMaxSpeed(VEL_MAX);
     motorX.setAcceleration(ACEL);
