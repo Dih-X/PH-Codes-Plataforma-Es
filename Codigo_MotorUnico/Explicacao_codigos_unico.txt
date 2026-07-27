@@ -6,3 +6,5 @@ Explicação sobre os códigos:
     versão 1: (não usa AccelStepper apropriadamente)
 
     versão 2: (não usa AccelStepper apropriadamente)
+
+    versão 3: Usa AccelStepper apropriadamente
