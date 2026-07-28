@@ -106,13 +106,22 @@ int delayPassos = 800;  //(Us) micro segundos | Usado no modo continuo indetermi
 String comando = "";
 bool printExecu = false;
 //Distancias////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-long passosX = 800;             //dist. movimento 200passos                                                       | Dist = metade da plataforma - largura da base do drone
-long passosY = 1600;            //200 por padrao (sem M0,M1,M2)   | O quanto que o drone sera puxado              | Dist = ate o final - profundidade da base do drone (talvez nn seja nescessario)
-long passosYempurrar = 1600;    //200 == 1 volta (sem os M's (ON) | O quanto que o drone sera empurrado           | Dist = ate o comeco - profundidade da base do drone
-long passosZ = 1600;            //M's = Modulos de subdivisao (embaixo dos capacitores)                           | Dist = altura desejada onde se possa trocar a bateria do drone
-long passosZgarra = 800;        //passosYempurrar precisa ser calculado com precisao, do contrario nao funcionara | Passos = Distancia por 1 volta completa, 1VC = 200 passos sem M's adicionais
-long passosZYgarra = 800;       //Zgarra controla o fechamento da garra | ZYgarra controla o deslocamento (extrusao) da garra
 
+//long passosX = 800;             //dist. movimento 200passos                                                       | Dist = metade da plataforma - largura da base do drone
+//long passosY = 1600;            //200 por padrao (sem M0,M1,M2)   | O quanto que o drone sera puxado              | Dist = ate o final - profundidade da base do drone (talvez nn seja nescessario)
+//long passosYempurrar = 1600;    //200 == 1 volta (sem os M's (ON) | O quanto que o drone sera empurrado           | Dist = ate o comeco - profundidade da base do drone
+//long passosZ = 1600;            //M's = Modulos de subdivisao (embaixo dos capacitores)                           | Dist = altura desejada onde se possa trocar a bateria do drone
+//long passosZgarra = 800;        //passosYempurrar precisa ser calculado com precisao, do contrario nao funcionara | Passos = Distancia por 1 volta completa, 1VC = 200 passos sem M's adicionais
+//long passosZYgarra = 800;       //Zgarra controla o fechamento da garra | ZYgarra controla o deslocamento (extrusao) da garra
+
+long passosX = 200;
+long passosY = 200;
+long passosZ = 200;
+
+long passosZgarra = 200;    
+long passosZYgarra = 200;   
+long passosYempurrar = 200; 
+ 
 // Desenvolver Formula matematica que possa calcular automaticamente a distancia a ser percorrida e transforme em passos do motor
 //  | Ex: Distancia (5.00cm) --> levar em conta diametro de objeto de rotacao do motor (Ex: uma engrenagem presa no eixo de rotacao do motor)
 // Entao atraves de um processo se eh obtida a quantidade de passos necessaria para anda X distancia
@@ -133,8 +142,14 @@ long passosZYgarra = 800;       //Zgarra controla o fechamento da garra | ZYgarr
 
 float valor_diametro;
 float diametro = valor_diametro;
-float circunferencia = 3.14 * diametro;
-int distancia = passosX * circunferencia;
+
+float circunferencia_X = 3.14 * diametroX;
+float circunferencia_Y = 3.14 * diametroY;
+float circunferencia_Z = 3.14 * diametroZ;
+
+int distanciaX = passosX * circunferencia_X;
+int distanciaY = passosY * circunferencia_Y;
+int distanciaZ = passosZ * circunferencia_Z;
 
 int passos = distancia / circunferencia;
 
