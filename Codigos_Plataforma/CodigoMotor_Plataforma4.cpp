@@ -102,8 +102,12 @@ AccelStepper motorZYgarra(AccelStepper::DRIVER, ZY_STEP, ZY_DIR);           //Ga
 //------------------------CONFIGURACOES-------------------------------------||
 
 //Ajustes////////////////////////////////////////////////////////
-int delayPassos = 800;  //(Us) micro segundos | Usado no modo continuo indeterminado
+//int delayPassos = 800;  //(Us) micro segundos | Usado no modo continuo indeterminado
+
 String comando = "";
+
+String diametro = "";
+
 bool printExecu = false;
 //Distancias////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -140,8 +144,13 @@ long passosYempurrar = 200;
  
 */
 
-float valor_diametro;
-float diametro = valor_diametro;
+float valor_diametroX;
+float valor_diametroY;
+float valor_diametroZ;
+
+float diametroX = valor_diametroX;
+float diametroY = valor_diametroY;
+float diametroZ = valor_diametroZ;
 
 float circunferencia_X = 3.14 * diametroX;
 float circunferencia_Y = 3.14 * diametroY;
@@ -187,15 +196,6 @@ EstadoAtualMotores estadoatual = STAND_BY;
 
 //--------------------------------------------------------------
 //FUNCOES///////////////////////////////////////////////////////
- 
-/*void stepMotor(int stepPin){
-    digitalWrite(stepPin, HIGH);
-    delay(delayPassos); //delayPassos           //Nao acho q seja necessaria v2
-    digitalWrite(stepPin, LOW);                 //Talvez seja (para movimento continuo indeterminado)
-    delay(delayPassos); //delayPassos           //No entando pode baguncar a contagem de passos e ate torna-los inuteis...
-}*/
- 
-//////////////////////////////////////////////////////////////// 
 //----------------------SETA OS PONTOS (zero) INICIAIS----------------
 void ZERO_X(){ 
     if (Xstart == true){
@@ -384,24 +384,24 @@ void setup(){
 
     Serial.begin(9600);
 
-    Serial.println("ATV, ZR, EMR, ESC");    
-    Serial.println("zpi, zu, zx, zy, zz");  
+    Serial.println("ATV, ZR, EMR, ESC");  
+    Serial.println("zpi, zu, zx, zy, zz");
 
     /*
-    Serial.println("=======================================================");
-    Serial.println(" > MAIN CMDS:                                      < |");
-    Serial.println(" | Digite ATV para acionar                           |");
-    Serial.println(" | Digite ZR  para entrar no zeraciamento (debuger)  |");
-    Serial.println(" | Digite EMR para parada de emergencia              |");
-    Serial.println(" | Digite ESC para sair do sistema (ou estado atual) |");
-    Serial.println(" |                                                   |");
-    Serial.println(" > IN DEBUGERS (zerenciamento):                    < |");
-    Serial.println(" | Digite ZPI para setar ponto zero inicial          |");
-    Serial.println(" | zu -> zerar eixos                                 |");
-    Serial.println(" | zx -> zerar eixo - X                              |");
-    Serial.println(" | zy -> zerar eixo - Y                              |");
-    Serial.println(" | zz -> zerar eixo - Z                              |");
-    Serial.println("=======================================================");
+
+    MAIN COMMANDS:
+    ATV - para acionar 
+    ZR  - para entrar no zeraciamento (debuger)
+    EMR - para parada de emergencia
+    ESC - para sair do sistema (ou estado atual)
+
+    IN DEBUGERS (zerenciamento):
+    zpi - para setar ponto zero inicial
+    zu  - zerar eixos
+    zx  - zerar eixo - X
+    zy  - zerar eixo - Y    
+    zz  - zerar eixo - Z
+
     */
 }
 
