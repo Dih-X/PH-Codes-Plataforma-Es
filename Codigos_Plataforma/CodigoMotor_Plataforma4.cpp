@@ -12,6 +12,7 @@
 #include <AccelStepper.h>
 
 //Controle dos motores: --------------------------------------------------------------
+
 //Y "Puxadores" do drone
 const int Y1_STEP = 3;          //2
 const int Y1_DIR = 6;           //3
@@ -20,7 +21,6 @@ const int Y2_STEP = 3;          //4
 const int Y2_DIR = 6;           //5
 
 //Empurradores Y
-
 const int Y3_STEP = 3;          //2
 const int Y3_DIR = 6;           //3
 
@@ -651,7 +651,7 @@ void loop()
             break;
 
         case EXPANSAO_X:
-        
+
             if (millis() - tempoEsperaExp >= 10000){
                 millis() - tempoEsperaExp >= 2000;
 

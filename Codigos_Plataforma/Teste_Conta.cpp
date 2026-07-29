@@ -1,3 +1,6 @@
+#include <Arduino.h>
+#include <time.h>
+
 long passosX = 200;
 long passosY = 200;
 long passosZ = 200;
@@ -31,6 +34,7 @@ void setup(){
 }
 
 void loop(){
+
     Serial.print("Dados X: ");
     Serial.println(passosX_Adar);
     Serial.println(diametroX);
@@ -49,5 +53,6 @@ void loop(){
     Serial.println(circunferencia_Z);
     Serial.println(distanciaZ);
 
-    delay(1000); // Aguarda 1 segundo antes de repetir
+    delay(1000);
+
 }
