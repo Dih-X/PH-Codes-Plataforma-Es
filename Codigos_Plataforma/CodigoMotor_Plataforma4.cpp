@@ -142,8 +142,8 @@ long passosZgarra = 200;
 long passosZYgarra = 200;   
 long passosYempurrar = 200; 
 
-float valor_diametroX;
-float valor_diametroY;
+float valor_diametroX;      //Possivelmente seria melhor transformar em uma funcao
+float valor_diametroY;      //Ter atencao ao diametro do eixo + o da engrenagem adicional
 float valor_diametroZ;
 
 float diametroX = valor_diametroX;
@@ -158,7 +158,9 @@ int distanciaX = passosX * circunferencia_X;
 int distanciaY = passosY * circunferencia_Y;
 int distanciaZ = passosZ * circunferencia_Z;
 
-int passos = distancia / circunferencia;
+int passosX_Adar = distanciaX / circunferencia_X;
+int passosY_Adar = distanciaY / circunferencia_Y;
+int passosZ_Adar = distanciaZ / circunferencia_Z;
 
 ///////////////////////////////////////////////////////
 
@@ -507,9 +509,6 @@ void loop()
             if (comando == "esc" && estadoatual != STAND_BY){               //Abortar espera de aterrissagem (volta pra stand by)
                 Serial.println("Leaving from landing waiting sequence");    
                 estadoatual = STAND_BY;
-                //pararZ();       
-                //pararZgarra();
-
 
             }else{
                 if (digitalRead(sensorPouso) == HIGH){          //Verifica se o drone pousou ou nao   
@@ -555,8 +554,6 @@ void loop()
             break;
             
         case MOVENDO_Z:
-            //Serial.println("movendo Z"); 
-            //motorZ.moveTo(passosZ); 
             
             if (Zend == true){
                 pararZ();
@@ -644,21 +641,17 @@ void loop()
                 motorY.moveTo(0);
                 motor2Y.moveTo(0);
     
-                motorYEmpurrao.moveTo(passosYempurrar);     //terao que parar sozinhos apos a distancia certa ter sido percorrida
-                motor2YEmpurrao.moveTo(passosYempurrar);    //na vdd poderam parar junto com BY1c/GX visto que andaram juntos 
+                motorYEmpurrao.moveTo(passosYempurrar);     //terao que parar sozinhos apos a distancia certa ter sido percorrida  
+                motor2YEmpurrao.moveTo(passosYempurrar);    //na vdd poderam parar junto com BY1c/GX visto que andaram juntos     
+
             }
-            
-            /*motorY.moveTo(0);
-            if(digitalRead(Ystart) == LOW){     //barra Y empurrao
-                pararY();
-                estadoatual = EXPANSAO_X;
-            }*/
             
             tempoEsperaExp = millis();
 
             break;
 
         case EXPANSAO_X:
+        
             if (millis() - tempoEsperaExp >= 10000){
                 millis() - tempoEsperaExp >= 2000;
 

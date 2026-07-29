@@ -22,21 +22,32 @@ int distanciaX = passosX * circunferencia_X;
 int distanciaY = passosY * circunferencia_Y;
 int distanciaZ = passosZ * circunferencia_Z;
 
-int passosX = distanciaX / circunferencia_X;
-int passosY = distanciaY / circunferencia_Y;
-int passosZ = distanciaZ / circunferencia_Z;
+int passosX_Adar = distanciaX / circunferencia_X;
+int passosY_Adar = distanciaY / circunferencia_Y;
+int passosZ_Adar = distanciaZ / circunferencia_Z;
 
 void setup(){
     Serial.begin(9600);
 }
 
 void loop(){
-    Serial.print("Passos X: ");
-    Serial.println(passosX);
-    Serial.print("Passos Y: ");
-    Serial.println(passosY);
-    Serial.print("Passos Z: ");
-    Serial.println(passosZ);
-    
+    Serial.print("Dados X: ");
+    Serial.println(passosX_Adar);
+    Serial.println(diametroX);
+    Serial.println(circunferencia_X);
+    Serial.println(distanciaX);
+
+    Serial.print("Dados Y: ");
+    Serial.println(passosY_Adar);
+    Serial.println(diametroY);
+    Serial.println(circunferencia_Y);
+    Serial.println(distanciaY);
+
+    Serial.print("Dados Z: ");
+    Serial.println(passosZ_Adar);
+    Serial.println(diametroZ);
+    Serial.println(circunferencia_Z);
+    Serial.println(distanciaZ);
+
     delay(1000); // Aguarda 1 segundo antes de repetir
 }
