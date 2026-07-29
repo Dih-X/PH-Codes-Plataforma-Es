@@ -1,7 +1,7 @@
  //Existe opcoes de controlar dois motores pra cada eixo
 //(Algumas poucas opcoes e limitadas) Falta implementar por completo
 
-//REVER AS VARIAVEIS, visto que ha muitas incertezas no projeto ainda...
+//REVER AS VARIAVEIS, visto que ha algumas incertezas no projeto ainda...
 
 //Sera dois Arduinos, dois motores por parte movel (exceto garra Z)
 
@@ -69,10 +69,7 @@ const int Zend = 32;            //Conferir se eh viavel
 const int ZGend = 30;       
 const int ZExend = 31;
 
-const int sensorPouso = A0;       //Pode ser um sensor de pressao   |   Falta fzr o calculo de valor e traducao pro circuito
-//const int sensor1Proxi1 = A1;   //Ultrassonico, como exemplo      |
-//const int sensor2Proxi1 = A2;   //Ultrassonico, como exemplo      |   Nao acho q sejam mais necessarios estes       
-//const int sensor3Proxi1 = A3;   //Ultrassonico, como exemplo      |   |sensores de proximidade...                   
+const int sensorPouso = A0;                
 
 //Fim SENSORES------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -109,6 +106,7 @@ String comando = "";
 String diametro = "";
 
 bool printExecu = false;
+
 //Distancias////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //long passosX = 800;             //dist. movimento 200passos                                                       | Dist = metade da plataforma - largura da base do drone
@@ -117,14 +115,6 @@ bool printExecu = false;
 //long passosZ = 1600;            //M's = Modulos de subdivisao (embaixo dos capacitores)                           | Dist = altura desejada onde se possa trocar a bateria do drone
 //long passosZgarra = 800;        //passosYempurrar precisa ser calculado com precisao, do contrario nao funcionara | Passos = Distancia por 1 volta completa, 1VC = 200 passos sem M's adicionais
 //long passosZYgarra = 800;       //Zgarra controla o fechamento da garra | ZYgarra controla o deslocamento (extrusao) da garra
-
-long passosX = 200;
-long passosY = 200;
-long passosZ = 200;
-
-long passosZgarra = 200;    
-long passosZYgarra = 200;   
-long passosYempurrar = 200; 
  
 // Desenvolver Formula matematica que possa calcular automaticamente a distancia a ser percorrida e transforme em passos do motor
 //  | Ex: Distancia (5.00cm) --> levar em conta diametro de objeto de rotacao do motor (Ex: uma engrenagem presa no eixo de rotacao do motor)
@@ -143,6 +133,14 @@ long passosYempurrar = 200;
  passos = passosX;
  
 */
+
+long passosX = 200;
+long passosY = 200;
+long passosZ = 200;
+
+long passosZgarra = 200;    
+long passosZYgarra = 200;   
+long passosYempurrar = 200; 
 
 float valor_diametroX;
 float valor_diametroY;
@@ -168,6 +166,7 @@ unsigned long tempoEsperaZ = 0;
 unsigned long tempoEsperaExp = 0; 
  
 //Velocidades////////////////////////////////////////////////////
+
 const float VEL_MAX = 800.0;  //acho q so vai ate 1000 (1k)
 const float ACEL = 200.0;
 
@@ -197,6 +196,7 @@ EstadoAtualMotores estadoatual = STAND_BY;
 //--------------------------------------------------------------
 //FUNCOES///////////////////////////////////////////////////////
 //----------------------SETA OS PONTOS (zero) INICIAIS----------------
+
 void ZERO_X(){ 
     if (Xstart == true){
         motorX.setCurrentPosition(0);  
@@ -552,8 +552,6 @@ void loop()
                 moverX();
             }
 
-            
-
             break;
             
         case MOVENDO_Z:
@@ -680,6 +678,7 @@ void loop()
                     }
                 }
             }    
+
             break;
 
         case STOP:
