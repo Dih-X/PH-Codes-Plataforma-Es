@@ -103,7 +103,7 @@ AccelStepper motorZYgarra(AccelStepper::DRIVER, ZY_STEP, ZY_DIR);           //Ga
 
 String comando = "";
 
-String diametro = "";
+String setagem = "";
 
 bool printExecu = false;
 
@@ -185,7 +185,8 @@ enum EstadoAtualMotores{
     RETORNO_Y,      //Retorna o drone (arrastando-o) a posicao de lancamento
     EXPANSAO_X,     //Libera ele (drone) lateralmente para lift off!
     STOP,           //Para a bagaca toda :/
-    EMER_STT        //Parada de emergencia ahh 
+    EMER_STT,       //Parada de emergencia ahh 
+    PERSONALIZACAO  //Setar valores de diametro e calcular distancias automaticamente (em desenvolvimento)
 };
 
 EstadoAtualMotores estadoatual = STAND_BY; 
