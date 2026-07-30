@@ -52,18 +52,6 @@ void loop (){
             estadoDadosAgora = Diam_X;
         
         }
-        
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            if (setagem == "zu" && estadoatual == PERSONALIZACAO){    //Move todos os eixos/garras para a posicao inicial (0)
-                Serial.println("zerando eixos...");
-                homing_U();
-
-            } else if (setagem == "esc" && estadoatual == PERSONALIZACAO){   //Sai desse modo
-                estadoatual = STAND_BY;
-                Serial.println("esc-ed {estadoatual} -> standing by");
-                Serial.println(" | SAIU   DO ZERENCIAMENTO |");
-            }
     }
     
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,12 +59,19 @@ void loop (){
     case PERSONALIZACAO: //Estado de espera onde comandos podem ser executados
 
         if (!printExecu){
-            Serial.println(" em AJUSTES/PERSONALIZACAO ");
-            printExecu = true;
+            Serial.println(" em AJUSTES/PERSONALIZACAO ");      //fazendo igual ao ZERENCIAMENTO
+            Serial.println(" cusX, cusY, cusZ, esc")            //no entanto com edicao/adicao dos
+            printExecu = true;                                  //diametros dos eixos e calculos de distancia
+            
         }
         
         if (comando == cusX){
             estadoDadosAgora = Diam_X;
+
+        } else if (comando == "esc" && estadoatual == PERSONALIZACAO){
+            estadoatual = STAND_BY;
+            Serial.println(" | SAIU DA PERSONALIZACAO |");
+            
         }
 
         switch (Estado_Dados){
@@ -92,7 +87,7 @@ void loop (){
 
                     setagem = 0;
 
-                }else if (comando == "esc" && estadoatual == PERSONALIZACAO){   //Sai desse modo
+                } else if (comando == "esc" && estadoatual == PERSONALIZACAO){   //Sai desse modo
                     
                     estadoatual = STAND_BY;
                     Serial.println("esc-ed {estadoatual} -> standing by");
