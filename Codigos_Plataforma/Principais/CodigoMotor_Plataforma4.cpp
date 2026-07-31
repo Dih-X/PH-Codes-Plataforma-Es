@@ -1,4 +1,4 @@
- //Existe opcoes de controlar dois motores pra cada eixo
+//Existe opcoes de controlar dois motores pra cada eixo
 //(Algumas poucas opcoes e limitadas) Falta implementar por completo
 
 //REVER AS VARIAVEIS, visto que ha algumas incertezas no projeto ainda...
@@ -146,11 +146,11 @@ float valor_diametroX;                          //Possivelmente seria melhor tra
 float valor_diametroY;                         //Ter atencao ao diametro do eixo + o da engrenagem adicional
 float valor_diametroZ;
 
+/*
 float diametroX = valor_diametroX;
 float diametroY = valor_diametroY;
 float diametroZ = valor_diametroZ;
 
-/*
 float circunferencia_X = 3.14 * diametroX;
 float circunferencia_Y = 3.14 * diametroY;
 float circunferencia_Z = 3.14 * diametroZ;
@@ -335,13 +335,14 @@ void abrirGarraBateria(){
     }
 }
 
-void calcularDistancia(){
+void calcularDistancia(float diametro, int passos){
     
-    circunferencia = 3.14 * valor_diametro;
-    distancia = passos * circunferencia;
-    passos_Adar = distancia / circunferencia;
+    //diametro = float valor_diametro;
+    float circunferencia = 3.14 * diametro;
+    float distancia = passos * circunferencia;
+    int passos_Andar = distancia / circunferencia;
 
-    return passos_Adar;
+    return passos_Andar;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -768,6 +769,7 @@ void loop()
                         setagem = Serial.parseFloat();
 
                         valor_diametroX = static_cast<int>(std::round(setagem));
+                        calcularDistancia(valor_diametroX, passosX);
 
                         //setagem = 0;
 
@@ -793,6 +795,7 @@ void loop()
                         setagem = Serial.parseFloat();
 
                         valor_diametroY = static_cast<int>(std::round(setagem));
+                        calcularDistancia(valor_diametroY, passosY);
 
                     } else if (comando == "esc" && estadoatual == PERSONALIZACAO){   //Sai desse modo
                         
@@ -816,6 +819,7 @@ void loop()
                         setagem = Serial.parseFloat();
 
                         valor_diametroZ = static_cast<int>(std::round(setagem));
+                        calcularDistancia(valor_diametroZ, passosZ);
 
                         //setagem = 0;
 
