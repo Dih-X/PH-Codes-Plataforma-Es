@@ -85,17 +85,17 @@ void loop (){
 
                     valor_diametroX = static_cast<int>(std::round(setagem));
 
-                    setagem = 0;
+                    //setagem = 0;
 
                 } else if (comando == "esc" && estadoatual == PERSONALIZACAO){   //Sai desse modo
                     
                     estadoatual = STAND_BY;
-                    Serial.println("esc-ed {estadoatual} -> standing by");
+                    
                     Serial.println(" | SAIU DA PERSONALIZACAO |");
 
                 } else {
 
-                    estadoDadosAgora = Nonium;
+                    //estadoDadosAgora = Nonium;
 
                 }
 
@@ -110,19 +110,45 @@ void loop (){
 
                     valor_diametroY = static_cast<int>(std::round(setagem));
 
-                }else if (comando == "esc" && estadoatual == PERSONALIZACAO){   //Sai desse modo
+                } else if (comando == "esc" && estadoatual == PERSONALIZACAO){   //Sai desse modo
                     
                     estadoatual = STAND_BY;
-                    Serial.println("esc-ed {estadoatual} -> standing by");
+                
                     Serial.println(" | SAIU DA PERSONALIZACAO |");
 
                 } else {
 
-                    estadoDadosAgora = Nonium;
+                    //estadoDadosAgora = Nonium;
 
                 }
 
                 break;
+
+            case Diam_Z:
+
+                if (Serial.available()){
+
+                    Serial.println(" | Digite o valor do diametro do eixo Z |");
+                    setagem = Serial.parseFloat();
+
+                    valor_diametroZ = static_cast<int>(std::round(setagem));
+
+                    //setagem = 0;
+
+                } else if (comando == "esc" && estadoatual == PERSONALIZACAO){   //Sai desse modo
+                    
+                    estadoatual = STAND_BY;
+                    
+                    Serial.println(" | SAIU DA PERSONALIZACAO |");
+
+                } else {
+
+                    //estadoDadosAgora = Nonium;
+
+                }
+
+                break;
+
         }
         
         break;
