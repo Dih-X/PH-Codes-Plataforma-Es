@@ -142,14 +142,15 @@ long passosZgarra = 200;
 long passosZYgarra = 200;   
 long passosYempurrar = 200; 
 
-float valor_diametroX;      //Possivelmente seria melhor transformar em uma funcao
-float valor_diametroY;      //Ter atencao ao diametro do eixo + o da engrenagem adicional
+float valor_diametroX;                          //Possivelmente seria melhor transformar em uma funcao
+float valor_diametroY;                         //Ter atencao ao diametro do eixo + o da engrenagem adicional
 float valor_diametroZ;
 
 float diametroX = valor_diametroX;
 float diametroY = valor_diametroY;
 float diametroZ = valor_diametroZ;
 
+/*
 float circunferencia_X = 3.14 * diametroX;
 float circunferencia_Y = 3.14 * diametroY;
 float circunferencia_Z = 3.14 * diametroZ;
@@ -161,6 +162,7 @@ int distanciaZ = passosZ * circunferencia_Z;
 int passosX_Adar = distanciaX / circunferencia_X;
 int passosY_Adar = distanciaY / circunferencia_Y;
 int passosZ_Adar = distanciaZ / circunferencia_Z;
+*/
 
 ///////////////////////////////////////////////////////
 
@@ -189,7 +191,16 @@ enum EstadoAtualMotores{
     PERSONALIZACAO  //Setar valores de diametro e calcular distancias automaticamente (em desenvolvimento)
 };
 
-EstadoAtualMotores estadoatual = STAND_BY; 
+EstadoAtualMotores estadoatual = STAND_BY;
+
+enum Estado_Dados{
+    Nonium,
+    Diam_X,
+    Diam_Y,
+    Diam_Z,
+};
+
+Estado_Dados estadoDadosAgora = Nonium; 
 
 // STAND_BY > ZERAMENTO > ATERRISSAGEM > HUNT (MOVER Y > FECHAR GARRA X (AO MESMO TEMPO)) > MOVER [Y] ATE [Y EMPURRAR] > SUBIR Z > EXTENDER Z >
 // > GARRA Z FECHA > RETRAIR Z > Z DESCE > EXTENDER Z > GARRA Z ABRE > TROCA BATERIA VAZIA POR CHEIA > GARRA FECHA > RETRAIR Z > Z SOBE >
@@ -323,6 +334,16 @@ void abrirGarraBateria(){
         motorZgarra.moveTo(0);
     }
 }
+
+void calcularDistancia(){
+    
+    circunferencia = 3.14 * valor_diametro;
+    distancia = passos * circunferencia;
+    passos_Adar = distancia / circunferencia;
+
+    return passos_Adar;
+}
+
 ////////////////////////////////////////////////////////////////
 //--------------------------------------------------------------
 
@@ -387,7 +408,7 @@ void setup(){
 
     Serial.begin(9600);
 
-    Serial.println("ATV, ZR, EMR, ESC");  
+    Serial.println("ATV, ZR, EMR, PERS, ESC");  
     Serial.println("zpi, zu, zx, zy, zz");
 
     /*
@@ -480,6 +501,17 @@ void loop()
             estadoatual = STAND_BY;                               
             Serial.println("quit {estadoatual} -> standing by");
             //std::cout << "Exited " << estadoatual << " state\n"
+        
+        } else if (comando == "pers" && estadoatual == STAND_BY){
+            Serial.println(" | Entrou na personalizacao | ");
+            Serial.println(" | Digite edx para comecar a edicao | ");
+            setagem = Serial.parseFloat();
+
+            estadoatual = PERSONALIZACAO;
+
+            if (comando == "edx" && estadoatual == PERSONALIZACAO){
+                Serial.println(" | Digite o valor do diametro do eixo X |");
+                estadoDadosAgora = Diam_X;
         
         } else {
             Serial.println(" | comando desconhecido    |");
@@ -708,6 +740,101 @@ void loop()
             estadoatual = STAND_BY;
             Serial.println(" -> standing by");
 
+            break;
+
+        case PERSONALIZACAO: //Estado de espera onde comandos podem ser executados
+
+            if (!printExecu){
+                Serial.println(" em AJUSTES/PERSONALIZACAO ");      //fazendo igual ao ZERENCIAMENTO
+                Serial.println(" cusX, cusY, cusZ, esc")            //no entanto com edicao/adicao dos
+                printExecu = true;                                  //diametros dos eixos e calculos de distancia
+            }
+            
+            if (comando == cusX){
+                estadoDadosAgora = Diam_X;
+
+            } else if (comando == "esc" && estadoatual == PERSONALIZACAO){
+                estadoatual = STAND_BY;
+                Serial.println(" | SAIU DA PERSONALIZACAO |");
+            }
+
+            switch (Estado_Dados){
+                
+                case Diam_X:
+
+                    if (Serial.available()){
+
+                        Serial.println(" | Digite o valor do diametro do eixo X |");
+                        setagem = Serial.parseFloat();
+
+                        valor_diametroX = static_cast<int>(std::round(setagem));
+
+                        //setagem = 0;
+
+                    } else if (comando == "esc" && estadoatual == PERSONALIZACAO){   //Sai desse modo
+                        
+                        estadoatual = STAND_BY;
+                        
+                        Serial.println(" | SAIU DA PERSONALIZACAO |");
+
+                    } else {
+
+                        //estadoDadosAgora = Nonium;
+
+                    }
+
+                    break;
+
+                case Diam_Y:
+
+                    if (Serial.available()){
+                        
+                        Serial.println(" | Digite o valor do diametro do eixo Y |");
+                        setagem = Serial.parseFloat();
+
+                        valor_diametroY = static_cast<int>(std::round(setagem));
+
+                    } else if (comando == "esc" && estadoatual == PERSONALIZACAO){   //Sai desse modo
+                        
+                        estadoatual = STAND_BY;
+                    
+                        Serial.println(" | SAIU DA PERSONALIZACAO |");
+
+                    } else {
+
+                        //estadoDadosAgora = Nonium;
+
+                    }
+
+                    break;
+
+                case Diam_Z:
+
+                    if (Serial.available()){
+
+                        Serial.println(" | Digite o valor do diametro do eixo Z |");
+                        setagem = Serial.parseFloat();
+
+                        valor_diametroZ = static_cast<int>(std::round(setagem));
+
+                        //setagem = 0;
+
+                    } else if (comando == "esc" && estadoatual == PERSONALIZACAO){   //Sai desse modo
+                        
+                        estadoatual = STAND_BY;
+                        
+                        Serial.println(" | SAIU DA PERSONALIZACAO |");
+
+                    } else {
+
+                        //estadoDadosAgora = Nonium;
+
+                    }
+
+                    break;
+
+            }
+            
             break;
     }    
     
