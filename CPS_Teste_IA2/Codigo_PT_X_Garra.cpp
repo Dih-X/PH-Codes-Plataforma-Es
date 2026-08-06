@@ -1,6 +1,6 @@
 /*
   ============================================================
-   ARDUINO X - GARRA ALINHADORA (ESCRAVO)
+   ARDUINO X - GARRA ALINHADORA (ESCRAVO) - BASEADO NA v.3
   ============================================================
   Este arduino eh ESCRAVO no barramento I2C (endereco 0x08).
   Ele so controla os motores X1/X2 (garra que alinha e segura

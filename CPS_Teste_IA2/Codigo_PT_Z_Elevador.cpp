@@ -1,6 +1,6 @@
 /*
   ============================================================
-   ARDUINO Z - ELEVADOR + GARRA DE BATERIA (ESCRAVO)
+   ARDUINO Z - ELEVADOR + GARRA (ESCRAVO) - BASEADO NA v.3
   ============================================================
   Este arduino eh ESCRAVO no barramento I2C (endereco 0x09).
   Ele controla os 3 mecanismos do braco Z:

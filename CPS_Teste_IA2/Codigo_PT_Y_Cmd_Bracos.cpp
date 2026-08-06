@@ -1,6 +1,6 @@
 /*
   ============================================================
-   ARDUINO Y - COMANDO CENTRAL (MESTRE)
+   ARDUINO Y - COMANDO CENTRAL (MESTRE) - BASEADO NA v.3
   ============================================================
   Este e o arduino "mestre": guarda toda a maquina de estados,
   recebe os comandos via Serial e comanda os arduinos X e Z
