@@ -18,13 +18,14 @@ long passosX = 800;
 
 void setup() {
 
+    Serial.begin(9600);
+
     pinMode(pinoEnable, OUTPUT);
     digitalWrite(pinoEnable, LOW);
 
     motorX.setMaxSpeed(VEL_MAX);
     motorX.setAcceleration(ACEL);
-
-    Serial.begin(9600);
+    
     Serial.println("zerar, acionar, return");
 
     Serial.println(" --> zerar: cria o ponto inicial do motor");
@@ -34,7 +35,7 @@ void setup() {
 }
 
 void loop(){
-    
+
     if (Serial.available()){                          // 'beffier' if command central script
         comando = Serial.readStringUntil('\n');      // cmds -> atv, zr, zpi, emr, esc
         comando.trim();                             // zu, zx, zy, zz, esczr
