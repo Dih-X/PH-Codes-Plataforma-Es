@@ -259,8 +259,8 @@ void setup(){
 
 ////////////////////////////////////////////////////////////////
 
-void loop()
-{
+void loop(){
+
     if (Serial.available()){
         comando = Serial.readStringUntil('\n');
         comando.trim();
@@ -426,6 +426,7 @@ void loop()
 
                 estadoatual = RETORNO_Z;
             }
+
             break;
 
         case RETORNO_Z:
@@ -433,9 +434,12 @@ void loop()
             if (statusZElevador & STATUS_INICIO){
                 enviarComandoZ(MEC_ELEVADOR, ACAO_PARAR);
                 estadoatual = RETORNO_Y;
+
             }else{
                 enviarComandoZ(MEC_ELEVADOR, ACAO_RETORNAR);
+
             }
+
             break;
 
         case RETORNO_Y: //Braco Principal
@@ -457,6 +461,7 @@ void loop()
             break;
 
         case EXPANSAO_X:
+        
             if (millis() - tempoEsperaExp >= 10000){
 
                 if (digitalRead(Ystart) == LOW){        //so libera com o fim de curso Y

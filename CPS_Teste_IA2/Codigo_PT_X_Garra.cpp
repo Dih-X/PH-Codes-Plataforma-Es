@@ -57,6 +57,7 @@ volatile byte comandoRecebido = ACAO_PARAR;   //ultimo comando recebido do mestr
 volatile bool novoComando = false;
 
 void setup(){
+    
     Wire.begin(X_ADDR);
     Wire.onReceive(receberComando);
     Wire.onRequest(enviarStatus);
