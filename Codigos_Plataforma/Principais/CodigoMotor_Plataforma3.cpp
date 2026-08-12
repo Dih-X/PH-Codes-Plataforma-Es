@@ -131,12 +131,14 @@ long passosZYgarra = 800;       //Zgarra controla o fechamento da garra | ZYgarr
  
 */
 
+/*
 float valor_diametro;
 float diametro = valor_diametro;
 float circunferencia = 3.14 * diametro;
 int distancia = passosX * circunferencia;
 
 int passos = distancia / circunferencia;
+*/
 
 ///////////////////////////////////////////////////////
 
@@ -215,6 +217,7 @@ void ZERO_Zvador(){
         motorZYgarra.setCurrentPosition(0);
     }
 }
+
 void homing_U(){         //reset Universal
     motorX.moveTo(0);
     motorY.moveTo(0);
@@ -290,6 +293,7 @@ void pararZgarra(){
 }
 
 ////////////////////////////////////////////////////////////////
+
 void fecharGarraBateria(){
     if (ZGend == true){
         motorZgarra.stop();
@@ -305,6 +309,7 @@ void abrirGarraBateria(){
         motorZgarra.moveTo(0);
     }
 }
+
 ////////////////////////////////////////////////////////////////
 //--------------------------------------------------------------
 
@@ -537,8 +542,6 @@ void loop()
                 moverX();
             }
 
-            
-
             break;
             
         case MOVENDO_Z:
@@ -646,6 +649,7 @@ void loop()
             break;
 
         case EXPANSAO_X:
+
             if (millis() - tempoEsperaExp >= 10000){
                 millis() - tempoEsperaExp >= 2000;
 
