@@ -1,7 +1,7 @@
 #include <AccelStepper.h>
 
 //Controle dos motores: --------------------------------------------------------------
-//Y "Puxadores" do drone
+
 const int X1_STEP = 3;          //2
 const int X1_DIR = 6;           //3
 
@@ -27,13 +27,14 @@ void setup() {
     Serial.begin(9600);
     Serial.println("zerar, acionar, return");
 
-    Serial.println(" -> zerar: cria o ponto inicial do motor");
-    Serial.println(" -> acionar: aciona o motor");
-    Serial.println(" -> return: retorna o motor para a posicao inicial");
+    Serial.println(" --> zerar: cria o ponto inicial do motor");
+    Serial.println(" --> acionar: aciona o motor");
+    Serial.println(" --> return: retorna o motor para a posicao inicial");
     
 }
 
 void loop(){
+    
     if (Serial.available()){                          // 'beffier' if command central script
         comando = Serial.readStringUntil('\n');      // cmds -> atv, zr, zpi, emr, esc
         comando.trim();                             // zu, zx, zy, zz, esczr
@@ -41,14 +42,19 @@ void loop(){
         
         if(comando == "acionar"){
             motorX.moveTo(passosX);
+            Serial.println("Motor andando para a posicao...");
 
         } else if(comando == "zerar"){
             motorX.setCurrentPosition(0);
+            Serial.println("Ponto zero do motor definido!");
 
         }else if(comando == "return"){
             motorX.moveTo(0);
+            Serial.println("Motor retornando para a posicao inicial...");
 
         }
     }
+
     motorX.run();
+
 }
