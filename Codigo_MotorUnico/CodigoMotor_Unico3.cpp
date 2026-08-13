@@ -14,7 +14,7 @@ const float VEL_MAX = 800.0;  //acho q so vai ate 1000 (1k)
 const float ACEL = 200.0;
 
 String comando = "";
-long passosX = 800;
+long passosX = 1600;    //distancia que "anda" rotaciona.. na real eh os passos de volta.. da umas 8 voltas completas +/-
 
 void setup() {
 
@@ -28,15 +28,34 @@ void setup() {
     motorX.setMaxSpeed(VEL_MAX);
     motorX.setAcceleration(ACEL);
     
-    Serial.println("-----------------------------------------------------------");
-    Serial.println("    >             zerar, acionar, return             <     ");
-    Serial.println("-----------------------------------------------------------");
-    Serial.println(" --> zerar: cria o ponto inicial do motor                  ");
-    Serial.println(" --> acionar: aciona o motor                               ");
-    Serial.println(" --> return: retorna o motor para a posicao inicial        ");
-    Serial.println("-----------------------------------------------------------");
+Serial.println("-----------------------------------------------------------");
+Serial.println("    >                    Digite:                     <     ");
+Serial.println("    >          zerar, acionar, return, stop          <     ");
+Serial.println("-----------------------------------------------------------");
+Serial.println(" --> zerar: cria o ponto inicial do motor                  ");
+Serial.println(" --> acionar: aciona o motor                               ");
+Serial.println(" --> return: retorna o motor para a posicao inicial        ");
+Serial.println("-----------------------------------------------------------");
     
 }
+
+/*
+
+Serial.println("-----------------------------------------------------------");
+Serial.println("    >                    Digite:                     <     ");
+Serial.println("    >          zerar, acionar, return, stop          <     ");
+Serial.println("-----------------------------------------------------------");
+Serial.println(" --> zerar: cria o ponto inicial do motor                  ");
+Serial.println(" --> acionar: aciona o motor                               ");
+Serial.println(" --> return: retorna o motor para a posicao inicial        ");
+Serial.println("-----------------------------------------------------------");
+
+Serial.println(" | Motor andando para a posicao...                       | ");
+Serial.println(" | Ponto zero do motor definido!                         | ");
+Serial.println(" | Motor retornando para a posicao inicial...            | ");
+Serial.println(" | Motor parando no meio do trajeto!                     | ");
+Serial.println(" | Comando Desconhecido <?>                              | ");
+*/
 
 void loop(){
 
@@ -47,16 +66,22 @@ void loop(){
         
         if(comando == "acionar"){
             motorX.moveTo(passosX);
-            Serial.println("Motor andando para a posicao...");
+            Serial.println(" | Motor andando para a posicao...                       | ");
 
         } else if(comando == "zerar"){
             motorX.setCurrentPosition(0);
-            Serial.println("Ponto zero do motor definido!");
+            Serial.println(" | Ponto zero do motor definido!                         | ");
 
         }else if(comando == "return"){
             motorX.moveTo(0);
-            Serial.println("Motor retornando para a posicao inicial...");
+            Serial.println(" | Motor retornando para a posicao inicial...            | ");
 
+        }else if(comando == "stop"){
+            motorX.moveTo(motorX.currentPosition());
+            Serial.println(" | Motor parando no meio do trajeto!                     | ");
+
+        }else{
+            Serial.println(" | Comando Desconhecido <?>                              | ");
         }
     }
 
