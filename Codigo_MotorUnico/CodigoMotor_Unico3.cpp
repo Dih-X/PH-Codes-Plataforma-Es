@@ -23,14 +23,18 @@ void setup() {
     pinMode(pinoEnable, OUTPUT);
     digitalWrite(pinoEnable, LOW);
 
+    delay(500);
+
     motorX.setMaxSpeed(VEL_MAX);
     motorX.setAcceleration(ACEL);
     
-    Serial.println("zerar, acionar, return");
-
-    Serial.println(" --> zerar: cria o ponto inicial do motor");
-    Serial.println(" --> acionar: aciona o motor");
-    Serial.println(" --> return: retorna o motor para a posicao inicial");
+    Serial.println("-----------------------------------------------------------");
+    Serial.println("    >             zerar, acionar, return             <     ");
+    Serial.println("-----------------------------------------------------------");
+    Serial.println(" --> zerar: cria o ponto inicial do motor                  ");
+    Serial.println(" --> acionar: aciona o motor                               ");
+    Serial.println(" --> return: retorna o motor para a posicao inicial        ");
+    Serial.println("-----------------------------------------------------------");
     
 }
 
