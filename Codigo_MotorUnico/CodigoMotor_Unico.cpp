@@ -30,6 +30,7 @@ void setup() {
   //digitalWrite(M_DIR, HIGH);
   Serial.println("Digite START ou STOP");
   Serial.begin(9600);
+  
 }
 
 // =====================================================

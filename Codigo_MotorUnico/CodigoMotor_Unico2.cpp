@@ -42,7 +42,6 @@ void setup() {
 
 // =====================================================
 
-
 void stepMotor(int stepPin) {
 
   digitalWrite(stepPin, HIGH);
@@ -54,10 +53,8 @@ void stepMotor(int stepPin) {
 
 // =====================================================
 
-
 void loop() {
   // -------------------------------------------------
-  
 
   if (Serial.available()) {
     comando = Serial.readStringUntil('\n');

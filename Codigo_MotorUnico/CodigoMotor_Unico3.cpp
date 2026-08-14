@@ -2,16 +2,16 @@
 
 //Controle dos motores: --------------------------------------------------------------
 
-const int X1_STEP = 3;          //2
-const int X1_DIR = 6;           //3
-
-AccelStepper motorX(AccelStepper::DRIVER, X1_STEP, X1_DIR);
+const int X1_STEP = 2;          //2-3
+const int X1_DIR  = 5;          //3-6
 
 const int pinoEnable = 8;
 
+AccelStepper motorX(AccelStepper::DRIVER, X1_STEP, X1_DIR);
+
 //Velocidades////////////////////////////////////////////////////
 const float VEL_MAX = 800.0;  //acho q so vai ate 1000 (1k)
-const float ACEL = 200.0;
+const float ACEL = 400.0;
 
 String comando = "";
 long passosX = 1600;    //distancia que "anda" rotaciona.. na real eh os passos de volta.. da umas 8 voltas completas +/-
@@ -28,19 +28,18 @@ void setup() {
     motorX.setMaxSpeed(VEL_MAX);
     motorX.setAcceleration(ACEL);
     
-Serial.println("-----------------------------------------------------------");
-Serial.println("    >                    Digite:                     <     ");
-Serial.println("    >          zerar, acionar, return, stop          <     ");
-Serial.println("-----------------------------------------------------------");
-Serial.println(" --> zerar: cria o ponto inicial do motor                  ");
-Serial.println(" --> acionar: aciona o motor                               ");
-Serial.println(" --> return: retorna o motor para a posicao inicial        ");
-Serial.println("-----------------------------------------------------------");
+    Serial.println("-----------------------------------------------------------");
+    Serial.println("    >                    Digite:                     <     ");
+    Serial.println("    >          zerar, acionar, return, stop          <     ");
+    Serial.println("-----------------------------------------------------------");
+    Serial.println(" --> zerar: cria o ponto inicial do motor                  ");
+    Serial.println(" --> acionar: aciona o motor                               ");
+    Serial.println(" --> return: retorna o motor para a posicao inicial        ");
+    Serial.println("-----------------------------------------------------------");
     
 }
 
 /*
-
 Serial.println("-----------------------------------------------------------");
 Serial.println("    >                    Digite:                     <     ");
 Serial.println("    >          zerar, acionar, return, stop          <     ");
