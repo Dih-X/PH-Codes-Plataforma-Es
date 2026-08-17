@@ -1,5 +1,5 @@
- //Existe opcoes de controlar dois motores pra cada eixo
-//(Algumas poucas opcoes e limitadas) Falta implementar por completo
+//Existe opcoes de controlar dois motores pra cada eixo
+//(Algumas poucas opcoes e limitadas) Implementado por completo
 
 //REVER AS VARIAVEIS, visto que ha muitas incertezas no projeto ainda...
 
@@ -39,14 +39,14 @@ const int ZY_STEP = 99;
 const int ZY_DIR = 98;
 
 //Garras no Z trocam a bateria
-const int Zgarra_STEP = 10;     //10   // Deve-se verificar
-const int Zgarra_DIR = 15;      //15   // Se disponivel
+const int Zgarra_STEP = 10;     //10   || Deve-se verificar
+const int Zgarra_DIR = 15;      //15   || Se disponivel
 
 //X - Alinhadores da pinça
-const int X1_STEP = 2;          //11   // A DEFINIR ENTRADAS    
-const int X1_DIR = 5;           //12   // Comunicacao entre arduinos?
-const int X2_STEP = 2;          //13   // Talvez seja nescessario visto a falta de entradas*
-const int X2_DIR = 5;           //14   //
+const int X1_STEP = 2;          //11   || A DEFINIR ENTRADAS    
+const int X1_DIR = 5;           //12   || Comunicacao entre arduinos?
+const int X2_STEP = 2;          //13   || Talvez seja nescessario visto a falta de entradas*
+const int X2_DIR = 5;           //14   ||
 
 //SENSORES---------------------------------------------------------------------------
 //Inicio
@@ -122,22 +122,22 @@ long passosZYgarra = 800;       //Zgarra controla o fechamento da garra | ZYgarr
 
 /* Algo como:
  
- circunferencia = 3,14 * diametro;
- distancia = passos * circunferencia;
- 
- distancia/circunferencia = passos;
- 
- passos = passosX;
+    circunferencia = 3,14 * diametro;
+    distancia = passos * circunferencia;
+    
+    distancia/circunferencia = passos;
+    
+    passos = passosX;
  
 */
 
 /*
-float valor_diametro;
-float diametro = valor_diametro;
-float circunferencia = 3.14 * diametro;
-int distancia = passosX * circunferencia;
+    float valor_diametro;
+    float diametro = valor_diametro;
+    float circunferencia = 3.14 * diametro;
+    int distancia = passosX * circunferencia;
 
-int passos = distancia / circunferencia;
+    int passos = distancia / circunferencia;
 */
 
 ///////////////////////////////////////////////////////
@@ -397,8 +397,8 @@ void setup(){
 
 ////////////////////////////////////////////////////////////////
 
-void loop()
-{
+void loop(){
+
     //possivelmente fazer um grande "IF" p/ decidir se aciona ou nao    |  (refeito)  |
     //fazer intervalos para os botoes agirem caso nescessario           |   (feito)   |        (botoes removidos)         |   Por enquanto anyways...
     //fazer comandos por string                                         |   (feito)   |   Precisam de revisao constante   |

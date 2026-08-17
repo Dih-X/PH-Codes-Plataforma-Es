@@ -40,20 +40,20 @@ void setup() {
 }
 
 /*
-Serial.println("-----------------------------------------------------------");
-Serial.println("    >                    Digite:                     <     ");
-Serial.println("    >          zerar, acionar, return, stop          <     ");
-Serial.println("-----------------------------------------------------------");
-Serial.println(" --> zerar: cria o ponto inicial do motor                  ");
-Serial.println(" --> acionar: aciona o motor                               ");
-Serial.println(" --> return: retorna o motor para a posicao inicial        ");
-Serial.println("-----------------------------------------------------------");
+    Serial.println("-----------------------------------------------------------");
+    Serial.println("    >                    Digite:                     <     ");
+    Serial.println("    >          zerar, acionar, return, stop          <     ");
+    Serial.println("-----------------------------------------------------------");
+    Serial.println(" --> zerar: cria o ponto inicial do motor                  ");
+    Serial.println(" --> acionar: aciona o motor                               ");
+    Serial.println(" --> return: retorna o motor para a posicao inicial        ");
+    Serial.println("-----------------------------------------------------------");
 
-Serial.println(" | Motor andando para a posicao...                       | ");
-Serial.println(" | Ponto zero do motor definido!                         | ");
-Serial.println(" | Motor retornando para a posicao inicial...            | ");
-Serial.println(" | Motor parando no meio do trajeto!                     | ");
-Serial.println(" | Comando Desconhecido <?>                              | ");
+    Serial.println(" | Motor andando para a posicao...                       | ");
+    Serial.println(" | Ponto zero do motor definido!                         | ");
+    Serial.println(" | Motor retornando para a posicao inicial...            | ");
+    Serial.println(" | Motor parando no meio do trajeto!                     | ");
+    Serial.println(" | Comando Desconhecido <?>                              | ");
 */
 
 void loop(){
@@ -83,7 +83,5 @@ void loop(){
             Serial.println(" | Comando Desconhecido <?>                              | ");
         }
     }
-
     motorX.run();
-
 }
