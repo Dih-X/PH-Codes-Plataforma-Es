@@ -1,9 +1,9 @@
 //Existe opcoes de controlar dois motores pra cada eixo
-//(Algumas poucas opcoes e limitadas) Falta implementar por completo
+//(Algumas poucas opcoes e limitadas) Implementado
 
 //REVER AS VARIAVEIS, visto que ha algumas incertezas no projeto ainda...
 
-//Sera dois Arduinos, dois motores por parte movel (exceto garra Z)
+//Sera três Arduinos, dois motores por parte movel (exceto garra Z)
 
 // Ideia, considerar fazer um codigo de alinhamento automático, onde independente da localizacao dos bracos dos motores, eles acharao o ponto zero...
 // Exemplo: Ta perdido no meio -> vai ate uma ponta -> bate no End, logo esta errado e tem q voltar
@@ -188,7 +188,7 @@ enum EstadoAtualMotores{
     EXPANSAO_X,     //Libera ele (drone) lateralmente para lift off!
     STOP,           //Para a bagaca toda :/
     EMER_STT,       //Parada de emergencia ahh 
-    PERSONALIZACAO  //Setar valores de diametro e calcular distancias automaticamente (em desenvolvimento)
+    PERSONALIZACAO  //Setar valores de diametro e calcular distancias automaticamente (WIP)
 };
 
 EstadoAtualMotores estadoatual = STAND_BY;
@@ -432,8 +432,8 @@ void setup(){
 
 ////////////////////////////////////////////////////////////////
 
-void loop()
-{
+void loop(){
+
     //possivelmente fazer um grande "IF" p/ decidir se aciona ou nao    |  (refeito)  |
     //fazer intervalos para os botoes agirem caso nescessario           |   (feito)   |        (botoes removidos)         |   Por enquanto anyways...
     //fazer comandos por string                                         |   (feito)   |   Precisam de revisao constante   |
@@ -510,9 +510,9 @@ void loop()
 
             estadoatual = PERSONALIZACAO;
 
-            if (comando == "edx" && estadoatual == PERSONALIZACAO){
-                Serial.println(" | Digite o valor do diametro do eixo X |");
-                estadoDadosAgora = Diam_X;
+        } else if (comando == "edx" && estadoatual == PERSONALIZACAO){
+            Serial.println(" | Digite o valor do diametro do eixo X |");
+            estadoDadosAgora = Diam_X;
         
         } else {
             Serial.println(" | comando desconhecido    |");
