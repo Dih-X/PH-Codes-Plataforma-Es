@@ -139,7 +139,7 @@ void loop() {
  
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    /*                      (comandos de controle) || str, config, rtrn
+    /*                      (comandos de controle) || str, config, rtrn, adv
     enum EstadoDuploMotor{           
       STAND_BY,     ---> estado de espera
       CONFIG,       ---> pra colocar a distancia a andar
@@ -181,7 +181,8 @@ void loop() {
       }
       
       void homing_U();
-       
+      estadoatual = STAND_BY;
+
       break;
 
     case MOVER:
@@ -202,6 +203,7 @@ void loop() {
 
     case SELECT:  //avancar ou retornar
 
+      /*
       if (digitalRead(Zstart) == LOW) {
         pararZ();
         estadoatual = STAND_BY; //Envia resposta ao proximo arduino
@@ -210,15 +212,32 @@ void loop() {
         motor2Z.moveTo(0);
         abrirGarraBateria();
       }
+      */
 
       //passos = passos*2; //dobra a distancia a percorrer
+
+      if (comando == "adv" && estadoatual == SELECT){
+
+        passos = passos*2;    //Revisar se eh funcional
+
+        moverZ();
+        estadoatual = SELECT;
+
+      } else if (comando == "rtrn" && estadoatual == SELECT){
+        homing_U();
+        estadoatual = STAND_BY;
+      }
 
       break;
 
     case CONFIG:  //definir distancia a percorrer
       
       //something
-    
+
+      if (comando == int numeroD && estadoatual == CONFIG){     //Revisar
+        calcularDistancia(numeroD, passosz);
+      }
+
       break;
 
   motorZ.run();
