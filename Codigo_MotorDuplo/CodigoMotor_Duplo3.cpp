@@ -30,16 +30,16 @@ bool printExecu = false;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-long passosX = 200;
-long passosY = 200;
+//long passosX = 200;
+//long passosY = 200;
 long passosZ = 200;
 
-long passosZgarra = 200;    
-long passosZYgarra = 200;   
-long passosYempurrar = 200; 
+//long passosZgarra = 200;    
+//long passosZYgarra = 200;   
+//long passosYempurrar = 200; 
 
-float valor_diametroX;                          //Possivelmente seria melhor transformar em uma funcao
-float valor_diametroY;                         //Ter atencao ao diametro do eixo + o da engrenagem adicional
+//float valor_diametroX;                          //Possivelmente seria melhor transformar em uma funcao
+//float valor_diametroY;                         //Ter atencao ao diametro do eixo + o da engrenagem adicional
 float valor_diametroZ;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,7 +199,7 @@ void loop() {
 
       if (comando == "adv" && estadoatual == SELECT){
 
-        passos = passos*2;    //Revisar se eh funcional
+        passosZ = passosZ*2;                                      //Revisar se eh funcional
 
         moverZ();
         estadoatual = SELECT;
@@ -218,8 +218,6 @@ void loop() {
       }
 
       break;
-
   motorZ.run();
   motor2Z.run();
-  
 }
