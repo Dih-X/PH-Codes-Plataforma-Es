@@ -50,23 +50,13 @@ float valor_diametroZ;
 // Selecionar > Percorrer mais distancia ou retornar ao ponto zero
 // Deve voltar ao ponto zero independente da distancia percorrida caso seja modificada para andar mais que o pre-setado
 
-enum EstadoDuploMotor{
-  STAND_BY,
-  CONFIG,
-  MOVER,
-  SELECT,
-  ZERADOR
+enum EstadoDuploMotor{    //---> (comandos de controle) || str, config, rtrn, adv
+  STAND_BY,               //---> estado de espera
+  CONFIG,                 //---> pra colocar a distancia a andar
+  MOVER,                  //---> comeca a andar
+  SELECT,                 //---> andar mais ou retornar apos a primeira andada
+  ZERADOR                 //---> nao sei ao certo/talvez seja usado
 };
-
-/*                                                          (comandos de controle) || str, config,
-enum EstadoDuploMotor{           
-  STAND_BY,     ---> estado de espera
-  CONFIG,       ---> pra colocar a distancia a andar
-  MOVER,        ---> comeca a andar
-  SELECT,       ---> andar mais ou retornar apos a primeira andada
-  ZERADOR       ---> nao sei ao certo/talvez seja usado
-};
-*/
 
 EstadoDuploMotor estadoatual = STAND_BY;
 
@@ -187,15 +177,6 @@ void loop() {
 
     case MOVER:
 
-      /*
-      if (Zend == true) {
-        pararZ();
-        estadoatual = SELECT;
-      } else {
-        moverZ();
-      }
-      */
-
       moverZ();
       estadoatual = SELECT;
 
@@ -231,9 +212,7 @@ void loop() {
       break;
 
     case CONFIG:  //definir distancia a percorrer
-      
-      //something
-
+ 
       if (comando == int numeroD && estadoatual == CONFIG){     //Revisar
         calcularDistancia(numeroD, passosz);
       }
