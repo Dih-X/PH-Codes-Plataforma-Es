@@ -50,32 +50,42 @@ float valor_diametroZ;
 // Selecionar > Percorrer mais distancia ou retornar ao ponto zero
 // Deve voltar ao ponto zero independente da distancia percorrida caso seja modificada para andar mais que o pre-setado
 
-
 enum EstadoDuploMotor{
   STAND_BY,
   CONFIG,
   MOVER,
-  OPTION,
+  SELECT,
   ZERADOR
 };
+
+/*                                                          (comandos de controle) || str, config,
+enum EstadoDuploMotor{           
+  STAND_BY,     ---> estado de espera
+  CONFIG,       ---> pra colocar a distancia a andar
+  MOVER,        ---> comeca a andar
+  SELECT,       ---> andar mais ou retornar apos a primeira andada
+  ZERADOR       ---> nao sei ao certo/talvez seja usado
+};
+*/
 
 EstadoDuploMotor estadoatual = STAND_BY;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void homing_U() {  //reset Universal
+void moverZ(){
+  motorZ.moveTo(passosZ);
+  motor2Z.moveTo(passosZ);
+}
 
+void homing_U() {  //reset Universal
   motorZ.moveTo(0);
   motor2Z.moveTo(0);
-
-  //motorZgarra.moveTo(0);
-  //motorZYgarra.moveTo(0);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void calcularDistancia(float diametro, int passos){
-    
+  
   //diametro = float valor_diametro;
   float circunferencia = 3.14 * diametro;
   float distancia = passos * circunferencia;
@@ -84,8 +94,9 @@ void calcularDistancia(float diametro, int passos){
   return passos_Andar;
 }
 
+//calcularDistancia(300, 200); Ex.Guia
+
 void setup() {
-  // put your setup code here, to run once:
   pinMode(pinoEnable, OUTPUT);
   digitalWrite(pinoEnable, LOW);
 
@@ -94,9 +105,6 @@ void setup() {
 
   motor2Z.setMaxSpeed(VEL_MAX);   //2M
   motor2Z.setAcceleration(ACEL);  //2M
-  
-  //motorZgarra.setMaxSpeed(VEL_MAX);
-  //motorZgarra.setAcceleration(ACEL);
     
   pinMode(Zgarra_STEP, OUTPUT);
   pinMode(Zgarra_DIR, OUTPUT);
@@ -107,22 +115,21 @@ void setup() {
   motorZ.setPinsInverted(false, true, false); 
   motor2Z.setPinsInverted(true, false, true); 
   
-  //motorZgarra.setPinsInverted(false, true, false);  //INVERTER CASO ESTEJA NO SENTIDO ERRADO
-    
-  Serial.begin(9600);  
-
+  Serial.begin(9600); 
   delay(100);
 
   Serial.println(" | AGUARDANDO ORDENS            |");
   Serial.println(" |\                             |");
   Serial.println(" | \                            |");
-  Serial.println(" | |atv, zera:                  |");
-  Serial.println(" | |zera -> zu, zz, zpi, esc    |");
-} 
+  Serial.println(" | |str, config:                |");
+  //Serial.println(" | |zera -> zu, zz, zpi, esc    |");
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void loop() { 
   
-  tempoEsperaEX = millis();   //nao sei se ha problema ou nao em deixar os millis aqui
+  tempoEsperaEX = millis();
   tempoEsperaZ = millis();
 
   if (Serial.available()) {                    // 'beffier' if command central script // 
@@ -132,24 +139,25 @@ void loop() {
  
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    /*                      (comandos de controle) || str, config,
+    /*                      (comandos de controle) || str, config, rtrn
     enum EstadoDuploMotor{           
       STAND_BY,     ---> estado de espera
       CONFIG,       ---> pra colocar a distancia a andar
       MOVER,        ---> comeca a andar
       SELECT,       ---> andar mais ou retornar apos a primeira andada
-      ZERADOR       ---> nao sei ao certo/talvez seja usado
+      ZERADOR       ---> nao sei ao certo/talvez nn seja usado
     };
     */
 
     if (comando == "str" && estadoatual == STAND_BY) { 
-      estadoatual = MOVER; 
+      estadoatual = MOVER;
+
       Serial.println(" > Em locomocao... "); 
 
     } else if (comando == "config" && estadoatual == STAND_BY) {
       estadoatual = CONFIG; 
   
-    } else if (comando == "zera" && estadoatual == STAND_BY) {  // <-- revisar aqui
+    } else if (comando == "rtrn" && estadoatual == STAND_BY) {  // <-- revisar aqui
       
       estadoatual = ZERADOR;  
       zerr = true;             
@@ -157,8 +165,9 @@ void loop() {
   }
   
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // | STAND_BY, CONFIG, MOVER, SELECT, ZERADOR |
   
-  switch (estadoatual) {
+  switch (estadoatual){
     case STAND_BY:
 
       printExecu = false;
@@ -167,46 +176,46 @@ void loop() {
     case ZERADOR:  
 
       if (!printExecu){
-        Serial.println("em zerenciamento");
+        Serial.println(" | RETORNANDO...               |");
         printExecu = true;
       }
+      
+      void homing_U();
        
       break;
 
     case MOVER:
 
+      /*
       if (Zend == true) {
-        
         pararZ();
-        estadoatual = TROCA_BATERIA;
-      
+        estadoatual = SELECT;
       } else {
-  
         moverZ();
-      
       }
-      
+      */
+
+      moverZ();
+      estadoatual = SELECT;
+
       break; 
-      
-    case SELECT:
+
+    case SELECT:  //avancar ou retornar
 
       if (digitalRead(Zstart) == LOW) {
         pararZ();
         estadoatual = STAND_BY; //Envia resposta ao proximo arduino
-
       } else {
-
         motorZ.moveTo(0);
         motor2Z.moveTo(0);
-        //motorZgarra.moveTo(0);
-        //motorZYgarra.moveTo(0);
         abrirGarraBateria();
-        
       }
+
+      //passos = passos*2; //dobra a distancia a percorrer
 
       break;
 
-    case CONFIG:
+    case CONFIG:  //definir distancia a percorrer
       
       //something
     
@@ -214,8 +223,5 @@ void loop() {
 
   motorZ.run();
   motor2Z.run();
-
-  //motorZgarra.run();
-  //motorZYgarra.run();
   
 }
