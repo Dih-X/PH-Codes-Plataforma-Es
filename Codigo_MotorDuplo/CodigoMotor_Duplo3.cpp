@@ -6,21 +6,14 @@ const int Z1_DIR = 6;
 const int Z2_STEP = 4;  //8   |   Motor 2
 const int Z2_DIR = 7;   //9
 
-//Garras no Z trocam a bateria
-const int Zgarra_STEP = 10;  //10   
-const int Zgarra_DIR = 15;
-
-const int pinoEnable = 8;  //Essencial para o funcionamento do CNC | Devera ser acionado para cada CNC posteriormente
+const int pinoEnable = 8;  //Essencial para o funcionamento do CNC
 
 AccelStepper motorZ(AccelStepper::DRIVER, Z1_STEP, Z1_DIR);
 AccelStepper motor2Z(AccelStepper::DRIVER, Z2_STEP, Z2_DIR);
-//AccelStepper motorZgarra(AccelStepper::DRIVER, Zgarra_STEP, Zgarra_DIR);  //Garra Open/Close
-//AccelStepper motorZYgarra(AccelStepper::DRIVER, ZY_STEP, ZY_DIR);
  
 String comando = ""; 
 
 unsigned long tempoEsperaZ = 0;   
-unsigned long tempoEsperaEX = 0;  
 
 const float VEL_MAX = 800.0;  //acho q so vai ate 1000 (1k)
 const float ACEL = 400.0; 
@@ -28,18 +21,7 @@ const float ACEL = 400.0;
 bool zerr = false; 
 bool printExecu = false;
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//long passosX = 200;
-//long passosY = 200;
-long passosZ = 200;
-
-//long passosZgarra = 200;    
-//long passosZYgarra = 200;   
-//long passosYempurrar = 200; 
-
-//float valor_diametroX;                          //Possivelmente seria melhor transformar em uma funcao
-//float valor_diametroY;                         //Ter atencao ao diametro do eixo + o da engrenagem adicional
+long passosZ = 200;                      
 float valor_diametroZ;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +49,7 @@ void moverZ(){
   motor2Z.moveTo(passosZ);
 }
 
-void homing_U() {  //reset Universal
+void homing_U() {  //reset Universal para a posicao zero
   motorZ.moveTo(0);
   motor2Z.moveTo(0);
 }
@@ -85,6 +67,8 @@ void calcularDistancia(float diametro, int passos){
 }
 
 //calcularDistancia(300, 200); Ex.Guia
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void setup() {
   pinMode(pinoEnable, OUTPUT);
@@ -111,7 +95,7 @@ void setup() {
   Serial.println(" | AGUARDANDO ORDENS            |");
   Serial.println(" |\                             |");
   Serial.println(" | \                            |");
-  Serial.println(" | |str, config:                |");
+  Serial.println(" | |str, config, rtrn, adv      |");
   //Serial.println(" | |zera -> zu, zz, zpi, esc    |");
 }
 
@@ -122,14 +106,17 @@ void loop() {
   tempoEsperaEX = millis();
   tempoEsperaZ = millis();
 
-  if (Serial.available()) {                    // 'beffier' if command central script // 
-    comando = Serial.readStringUntil('\n');   // cmds -> atv, zr, zpi, emr, esc      //  
-    comando.trim();                          // zu, zx, zy, zz, esczr               // 
+  if (Serial.available()) {                   
+    comando = Serial.readStringUntil('\n');   
+    comando.trim();                          
     comando.toLowerCase();  
  
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    /*                      (comandos de controle) || str, config, rtrn, adv
+    /*
+
+    (comandos de controle) || str, config, rtrn, adv
+
     enum EstadoDuploMotor{           
       STAND_BY,     ---> estado de espera
       CONFIG,       ---> pra colocar a distancia a andar
@@ -184,19 +171,6 @@ void loop() {
 
     case SELECT:  //avancar ou retornar
 
-      /*
-      if (digitalRead(Zstart) == LOW) {
-        pararZ();
-        estadoatual = STAND_BY; //Envia resposta ao proximo arduino
-      } else {
-        motorZ.moveTo(0);
-        motor2Z.moveTo(0);
-        abrirGarraBateria();
-      }
-      */
-
-      //passos = passos*2; //dobra a distancia a percorrer
-
       if (comando == "adv" && estadoatual == SELECT){
 
         passosZ = passosZ*2;                                      //Revisar se eh funcional
@@ -218,6 +192,9 @@ void loop() {
       }
 
       break;
+  }
+
   motorZ.run();
   motor2Z.run();
+
 }
