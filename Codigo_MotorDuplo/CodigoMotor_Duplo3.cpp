@@ -21,7 +21,7 @@ const float ACEL = 400.0;
 bool zerr = false; 
 bool printExecu = false;
 
-long passosZ = 200;                      
+int passosZ = 200;      //era long                
 float valor_diametroZ;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,12 +171,25 @@ void loop() {
 
     case SELECT:  //avancar ou retornar
 
+      if (!printExecu){
+        //Serial.println(" | RETORNANDO...               |");
+        Serial.println(" | Digite 'adv'ou 'rtrn'...    |");
+        printExecu = true;
+      }
+
       if (comando == "adv" && estadoatual == SELECT){
+        
+        passosZ_A = passosZ;   /////
+        passosZ_D = passosZ_A + 200;                                      //Revisar se eh funcional
 
-        passosZ = passosZ*2;                                      //Revisar se eh funcional
+        //moverZ();
 
-        moverZ();
+        motorZ.moveTo(passosZ_D);
+        motor2Z.moveTo(passosZ_D);
+
         estadoatual = SELECT;
+
+        passosZ_A = passosZ_D; /////
 
       } else if (comando == "rtrn" && estadoatual == SELECT){
         homing_U();
