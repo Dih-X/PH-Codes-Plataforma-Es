@@ -1,8 +1,15 @@
 Explicação sobre os códigos:
     Motor duplo:
     
-    No códigos dos motores duplos, se é controlado dois motores, X e Z que avançam e retornam depois de um certo tempo,
+    No código "CodigoMotor_Duplo2", se é controlado dois motores, X e Z
+    que avançam e retornam depois de um certo tempo,
     obedecem comandos escritos no terminal.
 
-    No códigos dos motores duplos elevador, se é controlado dois motores, X e Z que avançam e retornam juntos e obedecem
+    No código "CodigoMotor_DuploElevador2", se é controlado dois motores,
+    X e Z que avançam e retornam juntos e obedecem
     a comandos escritos no terminal.
+
+    CodigoMotor_Duplo3: Terceira versão do código de motor duplo. Nesta
+    iteração, o algorítimo usa a biblioteca AccelStepper de forma mais
+    profissionaal, assim como ajustes de distânica à percorrer(WIP).
+    (Motores andam pra lados opóstos se colocados lado-a-lado)
