@@ -1,3 +1,13 @@
+/*
+Verifique se o código está funcional e se ele é capaz de receber a
+informação de distância a ser percorrida e calcular e andar tal distância
+baseado no calculo do diametro do eixo, ou aparato que estiver no eixo do
+motor (uma engrenagem por exemplo) e a quantidade de passos que o motor
+leva para dar uma volta completa, 200 passos no nosso caso. Crie um novo
+arquivo na mesma pasta com o mesmo nome do original mas com numerção
+de 3.1
+*/
+
 #include <AccelStepper.h>
 
 const int Z1_STEP = 3;
