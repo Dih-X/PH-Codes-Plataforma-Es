@@ -179,17 +179,17 @@ void loop() {
 
       if (comando == "adv" && estadoatual == SELECT){
         
-        passosZ_A = passosZ;   /////
-        passosZ_D = passosZ_A + 200;                                      //Revisar se eh funcional
+        passosZ_Antes = passosZ;   /////
+        passosZ_Depois = passosZ_Antes + 200;                                      //Revisar se eh funcional
 
         //moverZ();
 
-        motorZ.moveTo(passosZ_D);
-        motor2Z.moveTo(passosZ_D);
+        motorZ.moveTo(passosZ_Depois);
+        motor2Z.moveTo(passosZ_Depois);
 
         estadoatual = SELECT;
 
-        passosZ_A = passosZ_D; /////
+        passosZ_Antes = passosZ_Depois; /////
 
       } else if (comando == "rtrn" && estadoatual == SELECT){
         homing_U();
