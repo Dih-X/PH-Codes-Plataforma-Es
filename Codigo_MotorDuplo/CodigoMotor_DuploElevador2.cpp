@@ -1,4 +1,4 @@
-#include <AccelStepper.h>
+#include <AccelStepper.h>   //100% FUNCIONAL - (25/8/26)
 
 // ---------------- PINOS ----------------
 
@@ -46,19 +46,14 @@ const float ACEL = 400.0;
 
 long passosX = 1600;  //dist. movimento 200passos
 long passosZ = 1600;
-//long passosY = 200;
 
 unsigned long tempoEsperaZ = 0;
 
 String comando = "";
 
-//bool working = false;
-
 // -------------------------------------------------
 
-void CycleBegin() {
-  motorX.setCurrentPosition(0);
-  motorZ.setCurrentPosition(0);
+void MoverMotor() {
 
   motorX.moveTo(passosX);
   motorZ.moveTo(passosZ);
@@ -96,13 +91,15 @@ void setup() {
   motorX.setMaxSpeed(VEL_MAX);
   motorX.setAcceleration(ACEL);
 
-  //motorY.setMaxSpeed(VEL_MAX);
-  //motorY.setAcceleration(ACEL);
-
   motorZ.setPinsInverted(true, false, true); //inverte a direcao usando AccelStepper
 
   motorZ.setMaxSpeed(VEL_MAX);
   motorZ.setAcceleration(ACEL);
+
+  ////
+  motorX.setCurrentPosition(0);
+  motorZ.setCurrentPosition(0);
+  ////
 
   Serial.println("=============================");
   Serial.println(" | Digite ATV para acionar | ");
@@ -135,7 +132,7 @@ void loop() {
     comando.toLowerCase();
 
     if (comando == "atv" && estado == IDLE) {
-      CycleBegin();
+      MoverMotor();
       Serial.println(" | SUBINDO...              |");
 
     } else if (comando == "atv" && estado != IDLE){
