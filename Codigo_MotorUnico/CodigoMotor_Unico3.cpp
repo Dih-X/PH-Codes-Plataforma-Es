@@ -1,4 +1,4 @@
-#include <AccelStepper.h>
+#include <AccelStepper.h>   //100% FUNCIONAL (25/8/26)
 
 //Controle dos motores: --------------------------------------------------------------
 
