@@ -1,4 +1,5 @@
 #include <AccelStepper.h>
+#include <Wire.h>
 
 //Controle dos motores: --------------------------------------------------------------
 //X - Alinhadores da pinça

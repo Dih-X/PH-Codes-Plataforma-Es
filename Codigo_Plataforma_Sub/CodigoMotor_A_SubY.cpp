@@ -1,4 +1,5 @@
-#include <AccelStepper.h>
+#include <AccelStepper.h>     //Usado p/fazer os motores andarem
+#include <Wire.h>             //Incluir wire p/utilizar I2C (comunicacao entre arduinos)
 
 //Controle dos motores: --------------------------------------------------------------
 //Y "Puxadores" do drone

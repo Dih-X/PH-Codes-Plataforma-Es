@@ -1,4 +1,5 @@
 #include <AccelStepper.h>
+#include <Wire.h>
 
 const int Z1_STEP = 3;  //6
 const int Z1_DIR = 6;
