@@ -1,12 +1,9 @@
 #include <AccelStepper.h>   //100% FUNCIONAL - (25/8/26)
 
-// ---------------- PINOS ----------------
+// -------------------- PINOS ---------------------
 
 const int X_STEP_Pin = 2;
 const int X_DIR_Pin = 5;
-
-//const int M_STEP_Y = 3;
-//const int M_DIR_Y = 6;
 
 const int Z_STEP_Pin = 4;
 const int Z_DIR_Pin = 7;
@@ -19,16 +16,6 @@ const int botaoStop = A0;
 AccelStepper motorX(AccelStepper::DRIVER, X_STEP_Pin, X_DIR_Pin); //AccelStepper::DRIVER
 AccelStepper motorZ(AccelStepper::DRIVER, Z_STEP_Pin, Z_DIR_Pin);
 
-/*enum Estado {
-  IDLE,
-  ATIVAR_X,
-  ATIVAR_Z,
-  ESPERA_Z,
-  REVERSE_X,
-  REVERSE_Z,
-  STOP_EMERGENCE,
-};*/
-
 enum Estado {
   IDLE,
   SUBIR,
@@ -39,7 +26,7 @@ enum Estado {
 
 Estado estado = IDLE;
 
-// --------------- CONFIGs ----------------
+// ------------------- CONFIGs ---------------------
 
 const float VEL_MAX = 800.0;
 const float ACEL = 400.0;
@@ -108,24 +95,9 @@ void setup() {
   Serial.println("=============================");
 }
 
-// =====================================================
-
-/*
-=============================
- | Digite ATV para acionar |
- | Digite EMR para parar   |
-=============================
- | ATIVANDO...             |
- | PARADA EMER...          |
- | Motor ja esta parado... |
- | comando desconhecido    | 
-  | Start      - pressed |
-  | Emer. Stop - pressed |
-*/
+// -------------------------------------------------
 
 void loop() {
-  // -------------------------------------------------
-
   if (Serial.available()) {
     comando = Serial.readStringUntil('\n');
     comando.trim();
@@ -160,25 +132,6 @@ void loop() {
       Serial.println(" | comando desconhecido    |");
     }
   }
-
-  // -------------------------------------------------
-
-  /*if (digitalRead(botaoStart) == LOW && estado == IDLE) {
-    delay(50);
-    
-    if (digitalRead(botaoStart) == LOW) {
-      CycleBegin();
-      Serial.println("  | Start      - pressed |");
-      Serial.println(" | ATIVANDO...             |");
-    }
-  } else if (digitalRead(botaoStop) == LOW && estado != IDLE && estado != STOP_EMERGENCE) {
-    EmerStopp();
-    Serial.println("  | Emer. Stop - pressed |");
-    Serial.println(" | PARADA EMER...          |");
-
-  } else if (digitalRead(botaoStop) == LOW && estado == IDLE && estado) {
-    Serial.println("| Motor ja esta parado... |");
-  }*/
 
   // -------------------------------------------------
 
