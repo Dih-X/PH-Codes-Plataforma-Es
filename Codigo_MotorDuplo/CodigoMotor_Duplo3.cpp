@@ -1,4 +1,4 @@
-#include <AccelStepper.h>
+#include <AccelStepper.h> //CONGELADO - 26/08/26 - 9:00 AM
 
 const int Z1_STEP = 3;  //6   |   Motor 1
 const int Z1_DIR = 6;
