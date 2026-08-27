@@ -145,6 +145,21 @@ void loop() {
     comando.trim();                          // zu, zx, zy, zz, esczr
     comando.toLowerCase();                   //
 
+    //Arduino 1 -> Arduino 2 -> Arduino 3  |  1 envia pro 2 eo 2 envia pro 3, 1 nao manda diretamente pro 3
+    //Arduino 1 <- Arduino 2 <- Arduino 3  |  1 recebe do 2 eo 2 recebe do 3, 3 nao envia diretamente pro 1
+
+    Wire.beginTransmission();
+    Wire.requestFrom(2);
+    Wire.endTransmission();
+
+    if (comando == "atv" && estadoatual == STAND_BY) {
+      //Serial.println(" | ESPERANDO POUSO...      |");
+      estadoatual = ATERRISSAGEM;
+      
+      Wire.beginTransmission(atv);
+      Wire.endTransmission(atv);
+    }
+
     /////////////////////////////////////////////////////////////////////////////
     
     if (comando == "atv" && estadoatual == STAND_BY) {
