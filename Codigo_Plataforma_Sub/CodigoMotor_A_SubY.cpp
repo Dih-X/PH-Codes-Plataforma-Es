@@ -131,6 +131,8 @@ void setup() {
 
   Serial.begin(9600);
 
+  Wire.begin();
+
   Serial.println("ATV, ZR, EMR, ESC");
   Serial.println("zpi, zu, zx, zy, zz");
 }   
