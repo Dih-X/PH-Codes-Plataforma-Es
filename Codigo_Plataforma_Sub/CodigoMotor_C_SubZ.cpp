@@ -170,6 +170,8 @@ void setup() {
     
   Serial.begin(9600);  
 
+  Wire.begin(3);
+
   delay(100);
 
 } 

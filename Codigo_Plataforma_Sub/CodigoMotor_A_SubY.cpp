@@ -17,7 +17,7 @@ const int Y3_DIR = 6;   //3
 const int Y4_STEP = 3;  //4
 const int Y4_DIR = 6;   //5
 
-const int Ystart = 26;  //Conferir se eh viavel
+const int Ystart = 26;     //Conferir se eh viavel
 const int Yend = 18;
 const int YstartEmp = 28;  //Conferir se eh viavel
 
@@ -131,7 +131,7 @@ void setup() {
 
   Serial.begin(9600);
 
-  Wire.begin();
+  Wire.begin(1);
 
   Serial.println("ATV, ZR, EMR, ESC");
   Serial.println("zpi, zu, zx, zy, zz");

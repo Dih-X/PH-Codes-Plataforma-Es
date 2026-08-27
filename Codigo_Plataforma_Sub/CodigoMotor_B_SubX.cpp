@@ -107,6 +107,8 @@ void setup(){
     Serial.println("ATV, ZR, EMR, ESC");    
     Serial.println("zpi, zu, zx, zy, zz");  
 
+    Wire.begin(2);
+
 }
 
 ////////////////////////////////////////////////////////////////
@@ -118,6 +120,8 @@ void loop()
         comando.trim();                             // zu, zx, zy, zz, esczr
         comando.toLowerCase();                     //
         
+        Wire.requestFrom()
+
         /////////////////////////////////////////////////////////////////////////////
         
         /*if (comando == "atv" && estadoatual == STAND_BY) {
