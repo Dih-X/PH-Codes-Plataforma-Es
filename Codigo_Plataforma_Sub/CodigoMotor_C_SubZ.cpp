@@ -181,9 +181,9 @@ void loop() {
   tempoEsperaEX = millis();     //nao sei se ha problema ou nao em deixar os millis aqui
   tempoEsperaZ = millis();      
 
-  if (Serial.available()) {                    // 'beffier' if command central script // 
-    comando = Serial.readStringUntil('\n');   // cmds -> atv, zr, zpi, emr, esc      //  
-    comando.trim();                          // zu, zx, zy, zz, esczr               // 
+  if (Serial.available()) {                    
+    comando = Serial.readStringUntil('\n');    
+    comando.trim();                            
     comando.toLowerCase();  
  
     //Arduino 1 -> Arduino 2 -> Arduino 3  |  1 envia pro 2 eo 2 envia pro 3, 1 nao manda diretamente pro 3

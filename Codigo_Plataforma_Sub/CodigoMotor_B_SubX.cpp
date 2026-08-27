@@ -115,10 +115,10 @@ void setup(){
 
 void loop()
 {
-    if (Serial.available()){                          // 'beffier' if command central script
-        comando = Serial.readStringUntil('\n');      // cmds -> atv, zr, zpi, emr, esc
-        comando.trim();                             // zu, zx, zy, zz, esczr
-        comando.toLowerCase();                     //
+    if (Serial.available()){                         
+        comando = Serial.readStringUntil('\n');      
+        comando.trim();                            
+        comando.toLowerCase();                   
         
         //Arduino 1 -> Arduino 2 -> Arduino 3  |  1 envia pro 2 eo 2 envia pro 3, 1 nao manda diretamente pro 3
         //Arduino 1 <- Arduino 2 <- Arduino 3  |  1 recebe do 2 eo 2 recebe do 3, 3 nao envia diretamente pro 1
