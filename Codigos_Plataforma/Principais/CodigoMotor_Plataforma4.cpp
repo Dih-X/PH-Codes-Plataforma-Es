@@ -335,14 +335,14 @@ void abrirGarraBateria(){
     }
 }
 
-void calcularDistancia(float diametro, int passos){
-    
+float calcularDistancia(float diametro, int passos){ //era void
     //diametro = float valor_diametro;
     float circunferencia = 3.14 * diametro;
     float distancia = passos * circunferencia;
     int passos_Andar = distancia / circunferencia;
 
     return passos_Andar;
+
 }
 
 ////////////////////////////////////////////////////////////////
@@ -566,7 +566,7 @@ void loop(){
             if (!printExecu){
                 Serial.println("Hunting...");  
                 printExecu = true;
-            }
+            }    
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -751,7 +751,7 @@ void loop(){
                 printExecu = true;                                  //diametros dos eixos e calculos de distancia
             }
             
-            if (comando == cusX){
+            if (comando == "cusX"){
                 estadoDadosAgora = Diam_X;
 
             } else if (comando == "esc" && estadoatual == PERSONALIZACAO){
