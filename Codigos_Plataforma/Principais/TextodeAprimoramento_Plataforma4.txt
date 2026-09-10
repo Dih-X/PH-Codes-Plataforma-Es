@@ -1,0 +1,79 @@
+Vou fazer uma revisão técnica focada em defeitos de execução, custo no loop principal, uso de memória e oportunidades de otimização. Primeiro vou confirmar o arquivo e localizar os trechos críticos; em seguida valido os achados mais importantes contra o compilador ou uma análise estática simples, sem alterar o código.
+
+Read , lines 1 to 220
+
+Read , lines 221 to 520
+
+Read , lines 521 to 900
+
+Read memory
+
+A leitura já mostra que há problemas de correção que também mascaram qualquer ganho de performance: vários testes de fim de curso comparam números de pino diretamente, há colisões de pinos e o trecho de personalização contém erros de compilação. Vou agora confirmar as linhas exatas e separar o que impede compilar do que pode causar movimento incorreto em hardware.
+
+Ran terminal command:  nl -ba Codigos_Plataforma/Principais/CodigoMotor_Plataforma4AI_version.cpp | sed -n '1,120p;200,390p;430,760p'
+
+Ran terminal command:  rg -n "== true|Estado_Dados|Serial\.println|pinMode|moveTo\(|readStringUntil|parseFloat|std::round|ZY_STEP|Y1_STEP|X1_STEP|Botao|ZEx|ZG" Codigos_Plataforma/Principais/CodigoMotor_Plataforma4AI_version.cpp
+
+Ran terminal command:  git status --short && git log -1 --oneline
+
+Ran terminal command:  grep -nE '== true|Estado_Dados|Serial\.println|pinMode|moveTo\(|readStringUntil|parseFloat|std::round|ZY_STEP|Y1_STEP|X1_STEP|Botao|ZEx|ZG' Codigos_Plataforma/Principais/CodigoMotor_Plataforma4AI_version.cpp
+
+Ran terminal command:  command -v arduino-cli || true; command -v platformio || true; command -v g++ || true
+
+Read , lines 1 to 260
+
+A confirmação reforça que o gargalo principal não é a quantidade de chamadas ao `run()`, mas a lógica de segurança: os sensores estão sendo tratados como constantes booleanas e vários pinos físicos estão duplicados. Vou fazer uma última checagem do bloco de personalização e da sequência de estados para apontar também os erros que impedem a compilação e os que deixam o fluxo preso.
+
+Read , lines 1 to 110
+
+Read , lines 580 to 950
+
+**Principais problemas**
+
+1. **Fim de curso nunca é lido**  
+   Comparações como `if (Yend == true)` comparam o número do pino `18` com `true` (`1`), portanto são sempre falsas. Isso impede transições importantes e pode deixar motores funcionando até o limite configurado. Use `digitalRead(Yend) == LOW/HIGH`, conforme a lógica elétrica. O problema aparece em `CodigoMotor_Plataforma4AI_version.cpp:236`, `CodigoMotor_Plataforma4AI_version.cpp:308` e no fluxo principal `CodigoMotor_Plataforma4AI_version.cpp:726`.
+
+2. **Há erros que impedem a compilação**  
+   - Falta `;` em `Serial.println(" cusX, cusY, cusZ, esc")` em `CodigoMotor_Plataforma4AI_version.cpp:858`.
+   - `switch (Estado_Dados)` usa o tipo do `enum`, mas deveria usar a variável `estadoDadosAgora`, em `CodigoMotor_Plataforma4AI_version.cpp:871`.
+   - `calcularDistancia()` calcula e retorna o mesmo valor de `passos`; o resultado nunca é atribuído a `passosX`, `passosY` ou `passosZ`, em `CodigoMotor_Plataforma4AI_version.cpp:489`.
+
+3. **Colisões graves de pinos**  
+   Vários motores foram configurados com os mesmos pinos:
+   - `Y1`, `Y2`, `Y3`, `Y4`: todos usam `3` e `6`.
+   - `Z1` e `Z2`: ambos usam `4` e `7`.
+   - `X1` e `X2`: ambos usam `2` e `5`.
+
+   Também existem colisões entre sensores e botões: `ZGend`/`BotaoStart`, `ZExend`/`BotaoStop` e `Zend`/`BotaoReset`. Isso precisa ser resolvido no mapa elétrico antes de qualquer otimização de software. Consulte `CodigoMotor_Plataforma4AI_version.cpp:15`.
+
+4. **Pinos inválidos ou não configurados**  
+   `ZY_STEP = 99` e `ZY_DIR = 98` provavelmente não existem na placa. Além disso, sensores como `ZGstart`, `ZGend`, `ZExstart`, `YstartEmp` e `sensorPouso` não são configurados explicitamente com `pinMode`, em `CodigoMotor_Plataforma4AI_version.cpp:504`.
+
+5. **Erro na inversão do segundo motor Y**  
+   A configuração final aplica `setPinsInverted()` novamente em `motorYEmpurrao`, em vez de `motor2YEmpurrao`. O segundo motor pode girar no sentido errado.
+
+6. **Homing não usa sensores**  
+   `homing_U()` apenas envia todos os motores para a posição lógica `0`, sem procurar fisicamente os fins de curso, em `CodigoMotor_Plataforma4AI_version.cpp:269`. Se o Arduino reiniciar fora da origem, a posição ficará incorreta.
+
+7. **Leitura serial bloqueante**  
+   `readStringUntil('\n')` pode bloquear até o timeout da biblioteca. `parseFloat()` também pode bloquear. Em uma máquina com motores, isso reduz a capacidade de responder rapidamente a comandos e emergências, em `CodigoMotor_Plataforma4AI_version.cpp:595`.
+
+8. **Uso de `String` em Arduino**  
+   `String comando` e `String setagem` podem fragmentar a heap em placas com pouca RAM. Prefira um buffer fixo de `char`, especialmente se o sistema permanecer ligado por longos períodos.
+
+**Otimizações recomendadas**
+
+- Chamar `moveTo()` somente quando o destino mudar, em vez de repetidamente a cada iteração do `loop()`.
+- Criar funções como `pararTodosMotores()` e `configurarMotor()` para reduzir duplicação e diminuir a chance de configurar um motor errado.
+- Trocar `float` por `long` ou `int32_t` quando a unidade puder ser passos inteiros.
+- Usar `PI` ou uma constante `constexpr`, mas eliminar a conta redundante de distância.
+- Remover `tempoEsperaZ`, que é atribuído mas não utilizado efetivamente.
+- Substituir a expressão sem efeito em `CodigoMotor_Plataforma4AI_version.cpp:796`:
+  ```cpp
+  millis() - tempoEsperaExp >= 2000;
+  ```
+- Limpar `comando` após processá-lo; atualmente o último comando permanece armazenado e pode influenciar estados posteriores.
+- Implementar debounce e validação dos sensores antes de tomar decisões de movimento.
+- Para dois motores no mesmo eixo, considerar sincronização explícita e tratamento de falha de um motor, em vez de apenas enviar o mesmo destino aos dois.
+
+Não alterei o arquivo. A prioridade deve ser: corrigir os erros de compilação, refazer o mapa de pinos e substituir todos os testes `PIN == true` por leituras reais dos sensores. Só depois vale medir e otimizar desempenho.
