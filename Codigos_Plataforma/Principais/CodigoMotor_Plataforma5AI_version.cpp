@@ -677,11 +677,11 @@ void loop(){
             Serial.println(" | Digite o valor do diametro do eixo X |");
             estadoDadosAgora = Diam_X;
 
-        } else if (comando == "cusy" && estadoatual == PERSONALIZACAO){
+        } else if (comando == "edy" && estadoatual == PERSONALIZACAO){
             Serial.println(" | Digite o valor do diametro do eixo Y |");
             estadoDadosAgora = Diam_Y;
 
-        } else if (comando == "cusz" && estadoatual == PERSONALIZACAO){
+        } else if (comando == "edz" && estadoatual == PERSONALIZACAO){
             Serial.println(" | Digite o valor do diametro do eixo Z |");
             estadoDadosAgora = Diam_Z;
         
@@ -856,11 +856,11 @@ void loop(){
 
             if (!printExecu){
                 Serial.println(" em AJUSTES/PERSONALIZACAO ");      //fazendo igual ao ZERENCIAMENTO
-                Serial.println(" cusX, cusY, cusZ, esc");           //no entanto com edicao/adicao dos
+                Serial.println(" edx, edy, edz, esc");           //no entanto com edicao/adicao dos
                 printExecu = true;                                  //diametros dos eixos e calculos de distancia
             }
             
-            if (comando == "cusx"){
+            if (comando == "edx"){
                 estadoDadosAgora = Diam_X;
 
             } else if (comando == "esc" && estadoatual == PERSONALIZACAO){
