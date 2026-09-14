@@ -737,7 +737,7 @@ void loop(){
             if (!printExecu){
                 Serial.println("Hunting...");  
                 printExecu = true;
-            }    
+            }
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -772,7 +772,7 @@ void loop(){
             
             break;
             
-        case TROCA_BATERIA:                                 // Revisar (Refinar) | Revisao 1 | Revisao 2
+        case TROCA_BATERIA:                  // Revisar (Refinar) | Revisao 1 | Revisao 2 | Revisao 3 - IA 
             executarTrocaBateria();
 
             break;
