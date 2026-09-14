@@ -1,12 +1,23 @@
 #include <AccelStepper.h>
 
-const int M_STEP_Z = 4;
-const int M_DIR_Z = 7;
+const int Z1_STEP = 3;  //6
+const int Z1_DIR = 6;
+const int Z2_STEP = 4;  //8
+const int Z2_DIR = 7;   //9
 
 const int pinoEnable = 8;
 
-AccelStepper motorX(AccelStepper::DRIVER, X_STEP_Pin, X_DIR_Pin); //AccelStepper::DRIVER
-AccelStepper motorZ(AccelStepper::DRIVER, Z_STEP_Pin, Z_DIR_Pin);
+const int ZY_STEP = 99;
+const int ZY_DIR = 98;
+
+const int Zgarra_STEP = 10;  //10   
+const int Zgarra_DIR = 15;
+
+AccelStepper motorZ(AccelStepper::DRIVER, Z1_STEP, Z1_DIR);
+AccelStepper motor2Z(AccelStepper::DRIVER, Z2_STEP, Z2_DIR);
+
+AccelStepper motorZgarra(AccelStepper::DRIVER, Zgarra_STEP, Zgarra_DIR);  //Garra Open/Close
+AccelStepper motorZYgarra(AccelStepper::DRIVER, ZY_STEP, ZY_DIR);
 
 enum Estado {
   IDLE,
@@ -25,6 +36,7 @@ const float ACEL = 400.0;
 
 long passosX = 1600;  //dist. movimento 200passos
 long passosZ = 1600;
+long passosZgarra = 1600;
 
 unsigned long tempoEsperaZ = 0;
 
@@ -37,6 +49,7 @@ void MoverMotor() {
 
   motorX.moveTo(passosX);
   motorZ.moveTo(passosZ);
+  motorZgarra.moveTo(passosZgarra);
 
   estado = SUBIR;
 }
@@ -64,24 +77,41 @@ void setup() {
   pinMode(pinoEnable, OUTPUT);
   digitalWrite(pinoEnable, LOW);
 
-  Serial.begin(9600);
-
-  pinMode(botaoStart, INPUT_PULLUP);
-  pinMode(botaoStop, INPUT_PULLUP);
-
-  motorX.setMaxSpeed(VEL_MAX);
-  motorX.setAcceleration(ACEL);
-
-  motorZ.setPinsInverted(true, false, true);        //inverte a direcao usando AccelStepper
-
   motorZ.setMaxSpeed(VEL_MAX);
   motorZ.setAcceleration(ACEL);
 
+  motor2Z.setMaxSpeed(VEL_MAX);   //2M
+  motor2Z.setAcceleration(ACEL);  //2M
+
+  motorZgarra.setMaxSpeed(VEL_MAX);
+  motorZgarra.setAcceleration(ACEL);
+
+  pinMode(Zgarra_STEP, OUTPUT);
+  pinMode(Zgarra_DIR, OUTPUT);
+   
+  pinMode(Zstart, INPUT_PULLUP);
+  pinMode(Zend, INPUT_PULLUP);
+
+  motorZ.setPinsInverted(false, true, false); 
+  motor2Z.setPinsInverted(true, false, true); 
+
+  motorZgarra.setPinsInverted(false, true, false);
+
+  Serial.begin(9600);
+
+  //pinMode(botaoStart, INPUT_PULLUP);
+  //pinMode(botaoStop, INPUT_PULLUP);
+
+  //motorX.setMaxSpeed(VEL_MAX);
+  //motorX.setAcceleration(ACEL);
+
+
   motorX.setCurrentPosition(0);
   motorZ.setCurrentPosition(0);
-
+  motorZgarra.setCurrentPosition(0);
 }
 
+//////LOOP///////////////////////////////////////////////////////////
 
 void loop() {
   if (Serial.available()) {
@@ -160,5 +190,6 @@ void loop() {
 
   motorX.run();
   motorZ.run();
-  
+  motor2Z.run();
+  motorZgarra.run(); 
 }
