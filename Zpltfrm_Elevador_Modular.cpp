@@ -31,6 +31,7 @@ unsigned long tempoEsperaZ = 0;
 String comando = "";
 
 //////FUNCOES////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 
 void MoverMotor() {
 
@@ -57,4 +58,27 @@ void Retorno(){
   estado = IDLE;
 }
 
-/////////////////////////////////////////////////////////////////////
+//////SETUP//////////////////////////////////////////////////////////
+
+void setup() {
+  pinMode(pinoEnable, OUTPUT);
+  digitalWrite(pinoEnable, LOW);
+
+  Serial.begin(9600);
+
+  pinMode(botaoStart, INPUT_PULLUP);
+  pinMode(botaoStop, INPUT_PULLUP);
+
+  motorX.setMaxSpeed(VEL_MAX);
+  motorX.setAcceleration(ACEL);
+
+  motorZ.setPinsInverted(true, false, true);        //inverte a direcao usando AccelStepper
+
+  motorZ.setMaxSpeed(VEL_MAX);
+  motorZ.setAcceleration(ACEL);
+
+  motorX.setCurrentPosition(0);
+  motorZ.setCurrentPosition(0);
+
+}
+
