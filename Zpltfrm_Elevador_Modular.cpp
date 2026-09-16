@@ -105,10 +105,9 @@ void setup() {
   //motorX.setMaxSpeed(VEL_MAX);
   //motorX.setAcceleration(ACEL);
 
-
-  motorX.setCurrentPosition(0);
-  motorZ.setCurrentPosition(0);
-  motorZgarra.setCurrentPosition(0);
+  //motorX.setCurrentPosition(0);
+  //motorZ.setCurrentPosition(0);
+  //motorZgarra.setCurrentPosition(0);
 }
 
 //////LOOP///////////////////////////////////////////////////////////
@@ -119,31 +118,42 @@ void loop() {
     comando.trim();
     comando.toLowerCase();
 
+    tempoEsperaEX = millis();
+    tempoEsperaZ = millis();
+
+
     if (comando == "atv" && estado == IDLE) {
       MoverMotor();
       Serial.println(" | SUBINDO...              |");
 
+
     } else if (comando == "atv" && estado != IDLE){
       Serial.println(" | ESPERE DESCER CMPLTMNT..|");
       
+
     } else if (comando == "dsc" && estado == HOLD){
       Descer();
       Serial.println(" | DESCENDO...             |");
       
+
     } else if (comando == "dsc" && estado == STOP_EMERGENCE){
       Descer();
       Serial.println(" | DESCENDO POS EMR...     |");
       
+
     } else if (comando == "dsc" && estado != HOLD){
       Serial.println(" | ESPERE O CICLO FNLZR... |");
+
 
     } else if (comando == "emr" && estado != IDLE) {
       EmerStopp();
       Serial.println(" | PARADA EMER...          |");
 
+
     } else if (comando == "emr" && estado == IDLE) {
       Serial.println(" | Motor ja esta parado... |");
 
+      
     } else {
       Serial.println(" | comando desconhecido    |");
     }
@@ -191,5 +201,6 @@ void loop() {
   motorX.run();
   motorZ.run();
   motor2Z.run();
-  motorZgarra.run(); 
+  motorZgarra.run();
+  
 }
