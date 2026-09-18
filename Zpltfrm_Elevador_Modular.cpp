@@ -173,9 +173,12 @@ void loop() {
       }
 
       break;
+
     case HOLD:
         //Serial.println("X & Z holdados... ");
-      break;
+      
+        break;
+
     case DESCER:
       if (motorX.distanceToGo() == 0 && motorZ.distanceToGo() == 0) {
         Serial.println("X & Z descendo...");
@@ -184,6 +187,7 @@ void loop() {
       }
 
       break;
+      
     case STOP_EMERGENCE:
 
       motorX.moveTo(motorX.currentPosition());
@@ -202,5 +206,5 @@ void loop() {
   motorZ.run();
   motor2Z.run();
   motorZgarra.run();
-  
+
 }
