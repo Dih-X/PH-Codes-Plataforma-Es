@@ -1,6 +1,32 @@
 #include <AccelStepper.h>
 #include <Wire.h>
 
+//Comunicacao I2C
+
+#define I2C_ADDR_Y 1 // (SubY/A)
+#define I2C_ADDR_X 2 // (SubX/B)
+#define I2C_ADDR_Z 3 // (SubZ/C) - Esta placa 
+
+#define I2C_CMD_START 0x01
+#define I2C_CMD_DONE  0x02
+
+volatile bool flagRecebeuStartX = false; //true quando X avisa que a cadeia acabou X -> Z -> X terminou
+
+void onI2CReceive(int numBytes){
+  if(Wire.avaible()){
+    byte cmd = Wire.read();
+    if (cmd == I2C_CMD_START) flagRecebeuStartX = true;
+  }
+}
+
+void enviarI2C(byte endereco, byte comando){
+  Wire.beginTransmission(endereco);
+  Wire.write(comando);
+  Wire.endTransmission();
+}
+
+const int pinoEnable = 8;
+
 const int Z1_STEP = 3;  //6
 const int Z1_DIR = 6;
 const int Z2_STEP = 4;  //8
@@ -23,8 +49,6 @@ const int Yend = 33;
 const int Zend = 32;  //Conferir se eh viavel
 const int ZGend = 30;
 const int ZExend = 31;
-
-const int pinoEnable = 8;  
 
 AccelStepper motorZ(AccelStepper::DRIVER, Z1_STEP, Z1_DIR);
 AccelStepper motor2Z(AccelStepper::DRIVER, Z2_STEP, Z2_DIR);
