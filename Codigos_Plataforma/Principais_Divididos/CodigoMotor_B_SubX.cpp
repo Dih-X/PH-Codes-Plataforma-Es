@@ -1,6 +1,36 @@
 #include <AccelStepper.h>
 #include <Wire.h>
 
+//Comunicacao I2C
+
+#define I2C_ADDR_Y 1 // (SubY/A)
+#define I2C_ADDR_X 2 // (SubX/B) - Esta placa 
+#define I2C_ADDR_Z 3 // (SubZ/C)
+
+#define I2C_CMD_START 0x01
+#define I2C_CMD_DONE  0x02
+
+volatile bool flagRecebeuStartY = false; //true quando X avisa que a cadeia acabou X -> Z -> X terminou
+volatile bool flagRecebeuDoneZ = false;
+
+void onI2CReceive(int numBytes){
+  if(Wire.avaible()){
+    byte cmd = Wire.read();
+    if (cmd == I2C_CMD_START) flagRecebeuStartY = true;
+    else if (cmd == I2C_CMD_DONE) flagRecebeuDoneZ = true;
+  }
+}
+
+void enviarI2C(byte endereco, byte comando){
+  Wire.beginTransmission(endereco);
+  Wire.write(comando);
+  Wire.endTransmission();
+}
+
+const int pinoEnable = 8;
+
+unsigned long tempoEsperaExp = 0;
+
 //Controle dos motores: --------------------------------------------------------------
 //X - Alinhadores da pinça
 const int X1_STEP = 2;          //11   // A DEFINIR ENTRADAS    
@@ -18,8 +48,6 @@ const int Xend = 17;            //Conferir se eh viavel
 const int X2end = 17;                
 
 //Fim SENSORES------------------------------------------------------------------
-
-const int pinoEnable = 8;
 
 AccelStepper motorX(AccelStepper::DRIVER, X1_STEP, X1_DIR);
 AccelStepper motor2X(AccelStepper::DRIVER, X2_STEP, X2_DIR);
