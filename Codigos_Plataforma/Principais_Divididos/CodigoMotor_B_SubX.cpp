@@ -157,67 +157,6 @@ void loop()
 
         /////////////////////////////////////////////////////////////////////////////
         
-        /*if (comando == "atv" && estadoatual == STAND_BY) {
-            Serial.println(" | ESPERANDO POUSO...      |");
-            estadoatual = ATERRISSAGEM;
-
-        } else if (comando == "atv" && estadoatual != STAND_BY){
-            Serial.println(" | JA EM BUSCA DO Hy-D-J   |");
-            
-        } else if (comando == "zr" && estadoatual == STAND_BY){
-            estadoatual = ZERAMENTO;
-            Serial.println(" | ENTROU NO ZERENCIAMENTO |");
-
-        } else if (comando == "zr" && estadoatual != STAND_BY){
-
-            Serial.println(" | NAO EH POSSIVEL AGORA   |");
-
-            /////////////////////////////////////////////////////////////////////////////
-
-        } else if (comando == "emr" && estadoatual != STOP){
-            estadoatual = EMER_STT;
-            Serial.println(" | PARADA DE EMERGENCIA    |");
-
-        } else if (comando == "emr" && estadoatual == STOP){
-            estadoatual = EMER_STT;
-            Serial.println(" | JA ESTA PARADO          |");
-
-            /////////////////////////////////////////////////////////////////////////////
-
-        } else if (comando == "zu" && estadoatual == ZERAMENTO){    //Move todos os eixos/garras para a posicao inicial (0)
-            Serial.println("zerando eixos...");
-            homing_U();
-
-        } else if (comando == "zx" && estadoatual == ZERAMENTO){    //Zera o eixo garra X
-            motorX.moveTo(0);
-
-        } else if (comando == "zy" && estadoatual == ZERAMENTO){    //Zera os eixos Y
-            motorY.moveTo(0);
-
-        } else if (comando == "zz" && estadoatual == ZERAMENTO){    //Zera o eixo e garra Z 
-            motorZ.moveTo(0);
-
-        } else if (comando == "zpi" && estadoatual == ZERAMENTO){   //&& (motorX.currentPosition != motorX.setCurrentPosition)
-            ZERO_X();                                               //define ponto zero | Garra X
-            ZERO_Y();                                               //define ponto zero | Barra Y [G.X], e Barra Y [EMP]
-            ZERO_Z();                                               //define ponto zero | Eixo Z
-            ZERO_Zvador();                                          //define zero point | Garra e Extensao Z
-
-        } else if (comando == "esc" && estadoatual == ZERAMENTO){   //Sai desse modo
-            estadoatual = STAND_BY;
-            Serial.println("esc-ed {estadoatual} -> standing by");
-            Serial.println(" | SAIU   DO ZERENCIAMENTO |");
-
-            /////////////////////////////////////////////////////////////////////////////
-
-        } else if (comando == "esc" && estadoatual != STAND_BY){
-            estadoatual = STAND_BY;                               
-            Serial.println("quit {estadoatual} -> standing by");
-            //std::cout << "Exited " << estadoatual << " state\n"
-        
-        } else {
-            Serial.println(" | comando desconhecido    |");
-        }*/
     }
      
     switch (estadoatual){
