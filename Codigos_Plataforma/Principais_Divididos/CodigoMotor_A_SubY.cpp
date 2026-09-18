@@ -1,6 +1,32 @@
 #include <AccelStepper.h>     //Usado p/fazer os motores andarem
 #include <Wire.h>             //Incluir wire p/utilizar I2C (comunicacao entre arduinos)
 
+//Comunicacao I2C
+
+#define I2C_ADDR_Y 1 // (SubY/A) - Esta placa 
+#define I2C_ADDR_X 2 // (SubX/B)
+#define I2C_ADDR_Z 3 // (SubZ/C) - Nao usado diretamente aqui...
+
+#define I2C_CMD_START 0x01
+#define I2C_CMD_DONE  0x02
+
+volatile bool flagRecebeuDoneX = false; //true quando X avisa que a cadeia acabou X -> Z -> X terminou
+
+void onI2CReceive(int numBytes){
+  if(Wire.avaible()){
+    byte cmd = Wire.read();
+    if (cmd == I2C_CMD_DONE) flagRecebeuDoneX = true;
+  }
+}
+
+void enviarI2C(byte endereco, byte comando){
+  Wire.beginTransmission(endereco);
+  Wire.write(comando);
+  Wire.endTransmission();
+}
+
+const int pinoEnable = 8;
+
 //Controle dos motores: --------------------------------------------------------------
 //Y "Puxadores" do drone
 const int Y1_STEP = 3;  //2
