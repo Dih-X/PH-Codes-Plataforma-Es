@@ -79,7 +79,7 @@ volatile byte mecanismoRecebido = 0;
 volatile byte comandoRecebido = 0;
 volatile bool novoComando = false;
 
-void executarComando(byte mecanismo, byte acao); //protÃ³tipo
+void executarComando(byte mecanismo, byte acao); //protótipo
 
 void setup(){
     Wire.begin(Z_ADDR);
@@ -109,8 +109,8 @@ void setup(){
     motorZYgarra.setAcceleration(ACEL);
 
     motorZ.setPinsInverted(false, true, false);
-    motor2Z.setPinsInverted(true, false, true);   //2o motor espelhado (direcao invertida)
-    motorZgarra.setPinsInverted(false, true, false);   //INVERTER CASO ESTEJA NO SENTIDO ERRADO
+    motor2Z.setPinsInverted(true, false, true);         //2o motor espelhado (direcao invertida)
+    motorZgarra.setPinsInverted(false, true, false);    //INVERTER CASO ESTEJA NO SENTIDO ERRADO
     motorZYgarra.setPinsInverted(false, true, false);
 
     Serial.begin(9600);   //opcional, so pra debug local via monitor serial
